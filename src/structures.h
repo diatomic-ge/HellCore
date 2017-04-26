@@ -45,22 +45,6 @@ enum error {
     E_RECMOVE, E_MAXREC, E_RANGE, E_ARGS, E_NACC, E_INVARG, E_QUOTA, E_FLOAT
 };
 
-/* Do not reorder or otherwise modify this list, except to add new elements at
- * the end, since the order here defines the numeric equivalents of the type
- * values, and those equivalents are both DB-accessible knowledge and stored in
- * raw form in the DB.
- */
-typedef enum {
-    TYPE_INT, TYPE_OBJ, _TYPE_STR, TYPE_ERR, _TYPE_LIST, /* user-visible */
-    TYPE_CLEAR,			/* in clear properties' value slot */
-    TYPE_NONE,			/* in uninitialized MOO variables */
-    TYPE_CATCH,			/* on-stack marker for an exception handler */
-    TYPE_FINALLY,		/* on-stack marker for a TRY-FINALLY clause */
-    _TYPE_FLOAT,		/* floating-point number; user-visible */
-    _TYPE_HASH,			/* user-visible */
-    _TYPE_WAIF			/* lightweight object; user-visible */
-} var_type;
-
 /* Types which have external data should be marked with the TYPE_COMPLEX_FLAG
  * so that free_var/var_ref/var_dup can recognize them easily.  This flag is
  * only set in memory.  The original _TYPE values are used in the database
@@ -71,14 +55,41 @@ typedef enum {
 #define TYPE_DB_MASK		0x7f
 #define TYPE_COMPLEX_FLAG	0x80
 
-#define TYPE_STR		(_TYPE_STR | TYPE_COMPLEX_FLAG)
-#define TYPE_FLOAT		(_TYPE_FLOAT | TYPE_COMPLEX_FLAG)
-#define TYPE_LIST		(_TYPE_LIST | TYPE_COMPLEX_FLAG)
-#define TYPE_HASH		(_TYPE_HASH | TYPE_COMPLEX_FLAG)
-#define TYPE_WAIF		(_TYPE_WAIF | TYPE_COMPLEX_FLAG)
+/* Do not renumber entries in this list, although you can add new elements at
+ * the end, since the numbers here define the numeric equivalents of the type
+ * values, and those equivalents are both DB-accessible knowledge and stored in
+ * raw form in the DB.
+ */
+typedef enum {
+    TYPE_INT     = 0,           /* user-visible */
+    TYPE_OBJ     = 1,           /* user-visible */
+    _TYPE_STR    = 2,           /* user-visible */
+    TYPE_ERR     = 3,           /* user-visible */
+    _TYPE_LIST   = 4,           /* user-visible */
+    TYPE_CLEAR   = 5,           /* in clear properties' value slot */
+    TYPE_NONE    = 6,           /* in uninitialized MOO variables */
+    TYPE_CATCH   = 7,           /* on-stack marker for an exception handler */
+    TYPE_FINALLY = 8,           /* on-stack marker for a TRY-FINALLY clause */
+    _TYPE_FLOAT  = 9,           /* floating-point number; user-visible */
+    _TYPE_HASH   = 10,          /* user-visible */
+    _TYPE_WAIF   = 11,          /* lightweight object; user-visible */
 
-#define TYPE_ANY ((var_type) -1)	/* wildcard for use in declaring built-ins */
-#define TYPE_NUMERIC ((var_type) -2)	/* wildcard for (integer or float) */
+    /*
+     * We include these here, since they're used later in code as values that
+     * var_type enums can take, so including them in the enum definition is more
+     * technically correct, aids static analysis, silences warnings, and allows
+     * us to make sure every value is unique more readily than preprocessor
+     * defines.
+     */
+    TYPE_STR     = (_TYPE_STR   | TYPE_COMPLEX_FLAG),
+    TYPE_FLOAT   = (_TYPE_FLOAT | TYPE_COMPLEX_FLAG),
+    TYPE_LIST    = (_TYPE_LIST  | TYPE_COMPLEX_FLAG),
+    TYPE_HASH    = (_TYPE_HASH  | TYPE_COMPLEX_FLAG),
+    TYPE_WAIF    = (_TYPE_WAIF  | TYPE_COMPLEX_FLAG),
+
+    TYPE_ANY     = -1,          /* wildcard for use in declaring built-ins */
+    TYPE_NUMERIC = -2           /* wildcard for (integer or float) */
+} var_type;
 
 typedef struct Var Var;
 
