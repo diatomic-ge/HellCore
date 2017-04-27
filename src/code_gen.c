@@ -1144,9 +1144,9 @@ ref_size(unsigned max)
 
 #ifdef BYTECODE_REDUCE_REF
 static int
-bbd_cmp(unsigned *a, unsigned *b)
+bbd_cmp(const void *a, const void *b)
 {
-	return *a - *b;
+	return *((unsigned*) a) - *((unsigned*) b);
 }
 #endif /* BYTECODE_REDUCE_REF */
 
