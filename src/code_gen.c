@@ -196,7 +196,7 @@ emit_extended_byte(Byte b, State * state)
 static int
 add_known_fixup(Fixup f, State * state)
 {
-    int i;
+    unsigned i;
 
     if (state->num_fixups == state->max_fixups) {
 	unsigned new_max = 2 * state->max_fixups;
@@ -448,7 +448,7 @@ static void
 enter_loop(int id, Fixup top_label, unsigned top_stack,
 	   int bottom_label, unsigned bottom_stack, State * state)
 {
-    int i;
+    unsigned i;
     Loop *loop;
 
     if (state->num_loops == state->max_loops) {
@@ -1144,7 +1144,7 @@ ref_size(unsigned max)
 
 #ifdef BYTECODE_REDUCE_REF
 static int
-bbd_cmp(int *a, int *b)
+bbd_cmp(unsigned *a, unsigned *b)
 {
 	return *a - *b;
 }
@@ -1155,10 +1155,10 @@ stmt_to_code(Stmt * stmt, GState * gstate)
 {
     State state;
     Bytecodes bc;
-    int old_i, new_i, fix_i;
+    unsigned old_i, new_i, fix_i;
 #ifdef BYTECODE_REDUCE_REF
-    int *bbd, n_bbd;		/* basic block delimiters */
-    unsigned varbits;		/* variables we've seen */
+    unsigned *bbd, n_bbd;       /* basic block delimiters */
+    unsigned varbits;           /* variables we've seen */
 #if NUM_READY_VARS > 32
 #error assumed NUM_READY_VARS was 32
 #endif
