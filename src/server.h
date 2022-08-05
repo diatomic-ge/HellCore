@@ -161,11 +161,11 @@ extern void boot_player(Objid player);
 extern void write_active_connections(void);
 extern int read_active_connections(void);
 
-FILE  *Dev_Random;  /* Global file pointer for /dev/random */
+extern FILE  *Dev_Random;  /* Global file pointer for /dev/random */
 
 #endif				/* Server_H */
 
-/* 
+/*
  * $Log: server.h,v $
  * Revision 1.5  2009/07/26 21:57:42  blacklite
  * CONNECTION_TRANSFERS define, disabled though. Plus the bf_transfer_connection
