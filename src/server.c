@@ -95,6 +95,8 @@ static slistener *all_slisteners = 0;
 server_listener null_server_listener =
 {0};
 
+FILE *Dev_Random = NULL;
+
 static void
 free_shandle(shandle * h)
 {
@@ -439,8 +441,7 @@ main_loop(void)
 
     /* Open /dev/urandom and keep it open as long as the server is running
        so that our random() has a source of random bits.  Dev_Random is
-       defined globally in server.h */
-    extern FILE *Dev_Random;
+       declared globally in server.h and defined above. */
     Dev_Random = fopen("/dev/urandom", "r");
     if (Dev_Random == NULL) panic("Couldn't open /dev/urandom");
 
@@ -1102,10 +1103,10 @@ server_connection_transferred(Objid old_id, Objid new_id)
 
     shandle *existing_h = find_shandle(new_id);
     shandle *new_h = find_shandle(old_id);
-        
+
     if (!new_h)
         panic("Connection transferred from non-existent handle");
-            
+
     new_h->player = new_id;
     new_h->connection_time = time(0);
 
@@ -1549,7 +1550,7 @@ bf_is_connected(Var arglist, Byte next, void *vdata, Objid progr)
     else
         r.v.num = 0;
     free_var(arglist);
-    
+
     return make_var_pack(r);
 }
 
@@ -1883,7 +1884,7 @@ register_server(void)
 
 char rcsid_server[] = "$Id: server.c,v 1.11 2010/05/17 01:52:27 blacklite Exp $";
 
-/* 
+/*
  * $Log: server.c,v $
  * Revision 1.11  2010/05/17 01:52:27  blacklite
  * add set_profiler_filename
