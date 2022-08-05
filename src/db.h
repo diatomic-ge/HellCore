@@ -427,7 +427,8 @@ typedef struct {
 
 extern db_verb_handle db_find_command_verb(Objid oid, const char *verb,
 					 db_arg_spec dobj, unsigned prep,
-					   db_arg_spec iobj);
+					   db_arg_spec iobj,
+					   int strict_dobj, int strict_iobj);
 				/* Returns a handle on the first matching
 				 * verb found defined on OID or one of its
 				 * ancestors.  A matching verb has a name
@@ -440,6 +441,35 @@ extern db_verb_handle db_find_command_verb(Objid oid, const char *verb,
 				 * only the routines declared below as taking a
 				 * `db_verb_handle' argument are guaranteed to
 				 * leave the handle intact.
+				 *
+				 * As a special case, strict_dobj or strict_iobj
+				 * may be set to true iff the corresponding
+				 * dobj/iobj argument is ASPEC_THIS.
+				 * In this case, this will only match verbs in
+				 * the database where at least *one* of the
+				 * given, strict argument specs is ASPEC_THIS.
+				 *
+				 * This is used in conjunction with
+				 * find_verb_on() to ensure that if the object
+				 * defining a verb is a player, either that
+				 * object must be the player who issued the
+				 * original command, at least one of the
+				 * dobj/iobj specs on that verb which matched
+				 * the player must be 'this' for this verb to
+				 * match.
+				 *
+				 * This prevents, e.g., programmers from having
+				 * an 'any none none' verb on themselves, which
+				 * can be triggered from another player with
+				 * 'verbname theprogrammer', and other similar
+				 * potential security issues, since there are
+				 * very few such verbs intended to be matched on
+				 * other players without a 'this' spec for the
+				 * argument for that player.
+				 *
+				 * The results of setting strict_dobj or
+				 * strict_iobj if the corresponding dobj/iobj
+				 * argument is not ASPEC_THIS is unspecified.
 				 */
 
 extern db_verb_handle db_find_callable_verb(Objid oid, const char *verb);
@@ -531,7 +561,7 @@ extern void db_delete_verb(db_verb_handle);
 
 #endif				/* !DB_h */
 
-/* 
+/*
  * $Log: db.h,v $
  * Revision 1.9  2010/05/17 01:49:02  blacklite
  * add bf_occupants

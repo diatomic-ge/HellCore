@@ -292,7 +292,8 @@ db_delete_verb(db_verb_handle vh)
 
 db_verb_handle
 db_find_command_verb(Objid oid, const char *verb,
-		     db_arg_spec dobj, unsigned prep, db_arg_spec iobj)
+		     db_arg_spec dobj, unsigned prep, db_arg_spec iobj,
+		     int strict_dobj, int strict_iobj)
 {
     Object *o;
     Verbdef *v;
@@ -305,14 +306,79 @@ db_find_command_verb(Objid oid, const char *verb,
 	    db_arg_spec viobj = (v->perms >> IOBJSHIFT) & OBJMASK;
 
 	    if (verbcasecmp(v->name, verb)
-		&& (vdobj == ASPEC_ANY || vdobj == dobj)
-		&& (v->prep == PREP_ANY || v->prep == prep)
-		&& (viobj == ASPEC_ANY || viobj == iobj)) {
-		h.definer = o->id;
-		h.verbdef = v;
-		vh.ptr = &h;
+		&& (v->prep == PREP_ANY || v->prep == prep)) {
+		    /* The verb name and preposition match, so now we check iobj
+		     * and dobj based on the strictness we got.
+		     *
+		     * The following variables are to avoid repeating these
+		     * below and hopefully make things a bit clearer. Apologies
+		     * in advance if you're trying to understand this.
+		     */
 
-		return vh;
+		    /*
+		     * Whether the object argument matches strictly.
+		     */
+		    int dobj_strict_match = vdobj == dobj;
+		    int iobj_strict_match = viobj == iobj;
+
+		    /*
+		     * Whether the argument in the database's verb specification
+		     * has ANY (and thus should match if we're not being
+		     * strict).
+		     */
+		    int dobj_any_match = vdobj == ASPEC_ANY;
+		    int iobj_any_match = viobj == ASPEC_ANY;
+
+		    /*
+		     * Whether the argument matches non-strictly.
+		     */
+		    int dobj_sloppy_match = dobj_strict_match || dobj_any_match;
+		    int iobj_sloppy_match = iobj_strict_match || iobj_any_match;
+
+		    /* Whether or not we found matching arguments. */
+		    int match = 0;
+
+		    /*
+		     * Check based on each combination of strictness we could've
+		     * gotten.
+		     * I tried to simplify this and failed, if you're looking at
+		     * this in the future.
+		     */
+		    if (strict_dobj && strict_iobj) {
+			/*
+			 * Ensure at least one matches strictly, but allow a
+			 * single 'any' match.
+			 * This addresses, e.g., a ':mention any to this' verb
+			 * on a player, where
+			 * 'mention anotherplayer to anotherplayer'
+			 * should still be valid, as it matches 'anotherplayer'
+			 * to a 'this', even though the 'any' is also matched to
+			 * 'anotherplayer'.
+			 */
+			match = (dobj_strict_match && iobj_strict_match)
+				|| (dobj_strict_match && iobj_any_match)
+				|| (iobj_strict_match && dobj_any_match);
+		    } else if (strict_dobj) {
+			/* Match dobj strictly. */
+			match = dobj_strict_match && iobj_sloppy_match;
+		    } else if (strict_iobj) {
+			/* Match iobj strictly. */
+			match = iobj_strict_match && dobj_sloppy_match;
+		    } else {
+			/*
+			 * If we have no strictness requirements, allow ANY
+			 * matches for whatever.
+			 */
+			match = dobj_sloppy_match && iobj_sloppy_match;
+		    }
+
+		    if (match) {
+			h.definer = o->id;
+			h.verbdef = v;
+			vh.ptr = &h;
+
+			return vh;
+		    }
 	    }
 	}
 
