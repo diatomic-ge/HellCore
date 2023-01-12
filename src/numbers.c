@@ -27,6 +27,7 @@
 #include "functions.h"
 #include "log.h"
 #include "random.h"
+#include "server.h"
 #include "storage.h"
 #include "structures.h"
 #include "utils.h"
@@ -680,9 +681,8 @@ bf_random(Var arglist, Byte next, void *vdata, Objid progr)
 
 int mels_random()
 {
-   extern FILE *Dev_Random;
    int result;
-   char buf[5]; 
+   char buf[5];
    /* read 4 bytes from /dev/urandom */
    fgets(buf, 5, Dev_Random);
    /*fread(&result, 1, 4, Dev_Random);*/
@@ -758,7 +758,7 @@ register_numbers(void)
 
 char rcsid_numbers[] = "$Id: numbers.c,v 1.7 2009/10/11 00:28:26 blacklite Exp $";
 
-/* 
+/*
  * $Log: numbers.c,v $
  * Revision 1.7  2009/10/11 00:28:26  blacklite
  * fix type checks for bf_mod
