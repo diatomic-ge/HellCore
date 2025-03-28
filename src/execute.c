@@ -3043,7 +3043,7 @@ bf_call_verb(Var arglist, Byte next, void *vdata, Objid progr)
 
 /*
  * Call a verb via verb number.
- * call_verb_index(OBJ vloc, INT vnum, STR vname, LIST vargs, [, OBJ this]) => ANY
+ * call_verb_index(OBJ vloc, INT vnum, STR vname, LIST vargs, [, OBJ this[, OBJ permissions]]) => ANY
  */
 static package
 bf_call_verb_index(Var arglist, Byte next, void *vdata, Objid progr)
@@ -3061,7 +3061,7 @@ bf_call_verb_index(Var arglist, Byte next, void *vdata, Objid progr)
         return make_error_pack(E_INVIND);
     }
 
-    if (arglist.v.list[0].v.num == 5) {
+    if (arglist.v.list[0].v.num >= 5) {
         new_this = arglist.v.list[5].v.obj;
     } else {
         new_this = RUN_ACTIV.this;
@@ -3074,6 +3074,11 @@ bf_call_verb_index(Var arglist, Byte next, void *vdata, Objid progr)
     }
 
     unsigned verb_index = arglist.v.list[2].v.num;
+
+    if (arglist.v.list[0].v.num >= 6) {
+        /* Drop permissions too. */
+        RUN_ACTIV.progr = arglist.v.list[6].v.obj;
+    }
 
     enum error e = call_verb_index(where, verb_index, new_this, arglist.v.list[3].v.str, arglist.v.list[4]);
 
@@ -3197,8 +3202,8 @@ register_execute(void)
     register_function("pass", 0, -1, bf_pass);
     register_function("call_verb", 3, 4, bf_call_verb, 
 	TYPE_OBJ, TYPE_STR, TYPE_LIST, TYPE_OBJ);
-    register_function("call_verb_index", 4, 5, bf_call_verb_index,
-        TYPE_OBJ, TYPE_INT, TYPE_STR, TYPE_LIST, TYPE_OBJ);
+    register_function("call_verb_index", 4, 6, bf_call_verb_index,
+        TYPE_OBJ, TYPE_INT, TYPE_STR, TYPE_LIST, TYPE_OBJ, TYPE_OBJ);
     register_function("set_task_perms", 1, 1, bf_set_task_perms, TYPE_OBJ);
     register_function("caller_perms", 0, 0, bf_caller_perms);
     register_function("callers", 0, 1, bf_callers, TYPE_ANY);
