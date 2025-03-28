@@ -659,7 +659,7 @@ free_activation(activation a, char data_too)
   does not change the vm in case of any error **/
 
 enum error
-_call_verb(Objid this, const char *vname, Var THIS, Var args, int do_pass)
+_call_verb_handle(Objid this, db_verb_handle h, const char *vname, Var THIS, Var args, int do_pass)
 {
     /* if call succeeds, args will be consumed.  If call fails, args
        will NOT be consumed  -- it must therefore be freed by caller */
@@ -676,34 +676,9 @@ _call_verb(Objid this, const char *vname, Var THIS, Var args, int do_pass)
        case, else sets up the activ_stack for the verb call and then returns
        E_NONE */
 
-    Objid where;
-    db_verb_handle h;
     Program *program;
     Var *env;
     Var v;
-
-    if (do_pass) {
-	if (!valid(RUN_ACTIV.vloc)) {
-	    return E_INVIND;
-	}
-	else if (do_pass == 1) {
-	    where = db_object_parent(RUN_ACTIV.vloc);
-	} else if (do_pass == 2) {
-	    where = RUN_ACTIV.vloc;
-	} else {
-	    panic("unknown do_pass value in call_verb");
-	}
-    } else
-	where = this;
-
-    if (!valid(where)) {
-	return E_INVIND;
-    }
-    h = db_find_callable_verb(where, vname);
-    if (!h.ptr)
-	return E_VERBNF;
-    else if (!push_activation())
-	return E_MAXREC;
 
     program = db_verb_program(h);
     vname = str_dup(vname);	/* ensure that vname is heap-allocated */
@@ -767,6 +742,40 @@ _call_verb(Objid this, const char *vname, Var THIS, Var args, int do_pass)
 
     return E_NONE;
 }
+
+enum error
+_call_verb(Objid this, const char *vname, Var THIS, Var args, int do_pass)
+{
+    Objid where;
+    db_verb_handle h;
+
+    where = this;
+    if (do_pass) {
+        if (!valid(RUN_ACTIV.vloc)) {
+            return E_INVIND;
+        }
+        else if (do_pass == 1) {
+            where = db_object_parent(RUN_ACTIV.vloc);
+        } else if (do_pass == 2) {
+            where = RUN_ACTIV.vloc;
+        } else {
+            panic("unknown do_pass value in call_verb");
+        }
+    }
+
+    if (!valid(where)) {
+        return E_INVIND;
+    }
+    h = db_find_callable_verb(where, vname);
+    if (!h.ptr) {
+        return E_VERBNF;
+    } else if (!push_activation()) {
+        return E_MAXREC;
+    }
+
+    return _call_verb_handle(this, h, vname, THIS, args, do_pass);
+}
+
  enum error
  call_verb(Objid this, const char *vname, Var args, int do_pass)
  {
