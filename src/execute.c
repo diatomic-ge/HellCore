@@ -659,17 +659,12 @@ free_activation(activation a, char data_too)
   does not change the vm in case of any error **/
 
 enum error
-_call_verb_handle(Objid this, db_verb_handle h, const char *vname, Var THIS, Var args, int do_pass)
+_call_verb_handle(Objid this, db_verb_handle h, const char *vname, Var THIS, Var args)
 {
     /* if call succeeds, args will be consumed.  If call fails, args
        will NOT be consumed  -- it must therefore be freed by caller */
     /* vname will never be consumed */
     /* THIS will never be consumed */
-
-    /* do_pass:
-     *   1 - normal pass, find this verb on parent of this.
-     *   2 - bf_call pass, go to entirely new verb, preserve this.
-     *  */
 
     /* will only return E_MAXREC, E_INVIND, E_VERBNF, or E_NONE */
     /* returns an error if there is one, and does not change the vm in that
@@ -746,6 +741,10 @@ _call_verb_handle(Objid this, db_verb_handle h, const char *vname, Var THIS, Var
 enum error
 _call_verb(Objid this, const char *vname, Var THIS, Var args, int do_pass)
 {
+    /* do_pass:
+     *   1 - normal pass, find this verb on parent of this.
+     *   2 - bf_call pass, go to entirely new verb, preserve this.
+     *  */
     Objid where;
     db_verb_handle h;
 
@@ -773,7 +772,7 @@ _call_verb(Objid this, const char *vname, Var THIS, Var args, int do_pass)
         return E_MAXREC;
     }
 
-    return _call_verb_handle(this, h, vname, THIS, args, do_pass);
+    return _call_verb_handle(this, h, vname, THIS, args);
 }
 
  enum error
