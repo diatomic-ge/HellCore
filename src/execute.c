@@ -775,6 +775,34 @@ _call_verb(Objid this, const char *vname, Var THIS, Var args, int do_pass)
     return _call_verb_handle(this, h, vname, THIS, args);
 }
 
+enum error
+_call_verb_index(Objid where, unsigned verb_index, Objid this, const char *vname, Var THIS, Var args)
+{
+    db_verb_handle h;
+
+    if (!valid(where)) {
+        return E_INVIND;
+    }
+    h = db_find_indexed_verb(where, verb_index);
+    if (!h.ptr) {
+        return E_VERBNF;
+    } else if (!push_activation()) {
+        return E_MAXREC;
+    }
+
+    return _call_verb_handle(this, h, vname, THIS, args);
+}
+
+enum error
+call_verb_index(Objid where, unsigned verb_index, Objid this, const char *vname, Var args)
+{
+    Var THIS;
+
+    THIS.type = TYPE_OBJ;
+    THIS.v.obj = this;
+    return _call_verb_index(where, verb_index, this, vname, THIS, args);
+}
+
  enum error
  call_verb(Objid this, const char *vname, Var args, int do_pass)
  {
@@ -3013,6 +3041,52 @@ bf_call_verb(Var arglist, Byte next, void *vdata, Objid progr)
    }
 }
 
+/*
+ * Call a verb via verb number.
+ * call_verb_index(OBJ vloc, INT vnum, STR vname, LIST vargs, [, OBJ this]) => ANY
+ */
+static package
+bf_call_verb_index(Var arglist, Byte next, void *vdata, Objid progr)
+{
+    Objid where = arglist.v.list[1].v.obj;
+    Objid new_this;
+
+    if (!is_wizard(progr)) {
+        free_var(arglist);
+        return make_error_pack(E_PERM);
+    }
+
+    if (!valid(where)) {
+        free_var(arglist);
+        return make_error_pack(E_INVIND);
+    }
+
+    if (arglist.v.list[0].v.num == 5) {
+        new_this = arglist.v.list[5].v.obj;
+    } else {
+        new_this = RUN_ACTIV.this;
+    }
+
+    if (arglist.v.list[2].v.num < 1) {
+        /* Don't bother looking for 0 or negative verb numbers. */
+        free_var(arglist);
+        return make_error_pack(E_VERBNF);
+    }
+
+    unsigned verb_index = arglist.v.list[2].v.num;
+
+    enum error e = call_verb_index(where, verb_index, new_this, arglist.v.list[3].v.str, arglist.v.list[4]);
+
+    if (e == E_NONE) {
+        arglist.v.list[4] = zero; /* avoid double-free */
+        free_var(arglist);
+        return tail_call_pack();
+    } else {
+        free_var(arglist);
+        return make_error_pack(e);
+    }
+}
+
 static package
 bf_set_task_perms(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (player) */
@@ -3123,6 +3197,8 @@ register_execute(void)
     register_function("pass", 0, -1, bf_pass);
     register_function("call_verb", 3, 4, bf_call_verb, 
 	TYPE_OBJ, TYPE_STR, TYPE_LIST, TYPE_OBJ);
+    register_function("call_verb_index", 4, 5, bf_call_verb_index,
+        TYPE_OBJ, TYPE_INT, TYPE_STR, TYPE_LIST, TYPE_OBJ);
     register_function("set_task_perms", 1, 1, bf_set_task_perms, TYPE_OBJ);
     register_function("caller_perms", 0, 0, bf_caller_perms);
     register_function("callers", 0, 1, bf_callers, TYPE_ANY);
