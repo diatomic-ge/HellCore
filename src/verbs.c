@@ -101,6 +101,29 @@ bf_has_callable_verb(Var arglist, Byte next, void *vdata, Objid progr)
     }
 }
 
+/*
+ * Return the verb numbers of all matching verbs on the given object.
+ * verb_matches(OBJ object, STR vname) => {INT vnum, ...}
+ */
+static package
+bf_verb_matches(Var arglist, Byte next, void *vdata, Objid progr)
+{
+    Objid oid = arglist.v.list[1].v.obj;
+
+    if (!valid(oid)) {
+        free_var(arglist);
+        return make_error_pack(E_INVARG);
+    } else if (!db_object_allows(oid, progr, FLAG_READ)) {
+        /* They don't have permission to read this object. */
+        free_var(arglist);
+        return make_error_pack(E_PERM);
+    } else {
+        Var result = db_find_matching_verb_numbers(oid, arglist.v.list[2].v.str);
+        free_var(arglist);
+        return make_var_pack(result);
+    }
+}
+
 static enum error
 validate_verb_info(Var v, Objid * owner, unsigned *flags, const char **names)
 {
@@ -589,6 +612,7 @@ register_verbs(void)
 {
     register_function("verbs", 1, 1, bf_verbs, TYPE_OBJ);
     register_function("has_callable_verb", 2, 2, bf_has_callable_verb, TYPE_OBJ, TYPE_STR);
+    register_function("verb_matches", 2, 2, bf_verb_matches, TYPE_OBJ, TYPE_STR);
     register_function("verb_info", 2, 2, bf_verb_info, TYPE_OBJ, TYPE_ANY);
     register_function("set_verb_info", 3, 3, bf_set_verb_info,
 		      TYPE_OBJ, TYPE_ANY, TYPE_LIST);

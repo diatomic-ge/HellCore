@@ -469,6 +469,12 @@ extern db_verb_handle db_find_defined_verb(Objid oid, const char *verb,
 				 * leave the handle intact.
 				 */
 
+extern Var db_find_matching_verb_numbers(Objid oid, const char *vname);
+				/* Returns a list of 1-indexed verb numbers
+				 * found defined on OID with a name matching
+				 * VERB.
+				 */
+
 extern db_verb_handle db_find_indexed_verb(Objid oid, unsigned index);
 				/* Returns a handle on the 1-based INDEX'th
 				 * verb defined on OID.  The `ptr' in the

@@ -575,6 +575,31 @@ db_find_defined_verb(Objid oid, const char *vname, int allow_numbers)
     return vh;
 }
 
+/*
+ * Get all verb numbers on the object that match the verb name.
+ */
+Var
+db_find_matching_verb_numbers(Objid oid, const char *vname)
+{
+    Object *o = dbpriv_find_object(oid);
+    Verbdef *v;
+    int i;
+    Var tempresult;
+    Var results = new_list(0);
+
+    tempresult.type = TYPE_INT;
+
+    for (i = 0, v = o->verbdefs; v; v = v->next, i++) {
+        if (verbcasecmp(v->name, vname)) {
+            /* Add this to the matches. */
+            tempresult.v.num = i + 1;
+            results = listappend(results, tempresult);
+        }
+    }
+
+    return results;
+}
+
 db_verb_handle
 db_find_indexed_verb(Objid oid, unsigned index)
 {
