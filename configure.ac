@@ -7,7 +7,7 @@
 # The minimum autoconf version required to rebuild the configure script.
 # (This is only needed on developer machines, and should be set to the lowest
 # possible version.)
-AC_PREREQ([2.64])
+AC_PREREQ([2.70])
 
 
 # Package name, version, bug report address, tarball name (default), and URL.
@@ -62,7 +62,7 @@ AC_PROG_CC
 # timestamps as if they were compiled.)
 # (The first line is so automake knows to handle yacc/bison/lex, and the second
 # makes autoconf look for a yacc/bison/lex compiler.)
-AM_PROG_LEX
+AM_PROG_LEX([noyywrap])
 AC_PROG_YACC
 
 # Check if we have gperf.

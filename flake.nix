@@ -10,6 +10,9 @@
   # Flake utility functions.
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
+  # Nixpkgs.
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+
   # The outputs this flake provides.
   outputs =
     { self
