@@ -5,24 +5,31 @@
 
 
 # The minimum autoconf version required to rebuild the configure script.
-# (This is only needed on developer machines, and should be set to the lowest
-# possible version.)
-AC_PREREQ([2.64])
+AC_PREREQ([2.71])
 
 
 # Package name, version, bug report address, tarball name (default), and URL.
 # NOTE: The HellCore version should be set here, not elsewhere.
 AC_INIT([HellCore],
         [1.10.4],
-        [https://github.com/necanthrope/HellCore],
+        [https://github.com/diatomic-ge/HellCore],
         [],
-        [https://github.com/necanthrope/HellCore])
+        [https://github.com/diatomic-ge/HellCore])
+
+
+# Put extra build tools in the build-aux directory.
+AC_CONFIG_AUX_DIR([build-aux])
 
 
 # Initialize automake.
 # foreign:      Tell automake not to expect the standard GNU files (NEWS,
 #               AUTHORS, etc.), and not to error when it doesn't find them.
 AM_INIT_AUTOMAKE([foreign])
+
+
+# Load macros from our m4 directory.
+AC_CONFIG_MACRO_DIRS([m4])
+
 
 # By default, just show what's being compiled while building, rather than the
 # whole command.
@@ -48,10 +55,20 @@ AC_CONFIG_FILES([Makefile
                  src/version.c])
 
 
+# The header with all our build-time configuration.
+AC_CONFIG_HEADERS([config.h])
+
+
 # Check for necessary programs.
 
 # Make sure we have a working C compiler.
 AC_PROG_CC
+
+# Ensure we have a working install.
+AC_PROG_INSTALL
+
+# Make sure MAKE is set properly when handling subdirectories.
+AC_PROG_MAKE_SET
 
 # Make sure we have a working yacc/bison/lex compiler.
 # (If a compiler isn't available but the yacc/bison/lex files are already
@@ -59,7 +76,7 @@ AC_PROG_CC
 # timestamps as if they were compiled.)
 # (The first line is so automake knows to handle yacc/bison/lex, and the second
 # makes autoconf look for a yacc/bison/lex compiler.)
-AM_PROG_LEX
+AC_PROG_LEX([noyywrap])
 AC_PROG_YACC
 
 # Check if we have gperf.
@@ -70,6 +87,13 @@ AM_MISSING_PROG([GPERF], [gperf])
 # Find a valid sed.
 AC_PROG_SED
 
+
+
+# Add additional checks for buffer overflows.
+AX_ADD_FORTIFY_SOURCE
+
+# Enable a bunch of compiler warnings.
+AX_CFLAGS_WARN_ALL
 
 
 # Check for necessary libraries and headers.

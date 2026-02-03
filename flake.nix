@@ -50,6 +50,9 @@
 
           # The build-time inputs needed to build hellcore.
           nativeBuildInputs = with pkgs; [
+            # Include the autoconf-archive.
+            autoconf-archive
+
             # This automatically regenerates the autoconf and automake build
             # system.
             autoreconfHook
@@ -59,6 +62,8 @@
 
             # The flex lexxer generator.
             flex
+
+            gnulib
 
             # The gperf perfect hash generator for recognizing keywords.
             gperf
