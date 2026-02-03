@@ -84,7 +84,7 @@ AC_SEARCH_LIBS([atan2], [m])
 # Figure out what crypt we have.
 
 # Find a crypt.h.
-AC_CHECK_HEADERS([crypt])
+AC_CHECK_HEADERS([crypt.h])
 
 # Link the crypt library.
 # If we don't find a valid crypt() implementation, be loud and give up.
