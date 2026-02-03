@@ -20,7 +20,7 @@
 
 #include "my-stdio.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "execute.h"
 #include "program.h"
 #include "structures.h"
@@ -68,7 +68,7 @@ typedef void *(*bf_read_type) (void);
 #define FUNC_NOT_FOUND   MAX_FUNC
 /* valid function numbers are 0 - 255, or a total of 256 of them.
    function number 256 is reserved for func_not_found signal.
-   hence valid function numbers will fit in one byte but the 
+   hence valid function numbers will fit in one byte but the
    func_not_found signal will not */
 
 extern const char *name_func_by_num(unsigned);
@@ -91,7 +91,7 @@ extern void load_server_options(void);
 
 #endif
 
-/* 
+/*
  * $Log: functions.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

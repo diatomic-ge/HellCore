@@ -36,7 +36,7 @@
 /* SRC Research Report #3.                                                   */
 /*****************************************************************************/
 
-/* 
+/*
  * Syntax:    Exception my_exception;
  *
  *              TRY
@@ -60,7 +60,7 @@
 
 #include <setjmp.h>
 
-#include "config.h"
+#include "oldconfig.h"
 
 #define ES_MaxExceptionsPerScope	10
 
@@ -158,7 +158,7 @@ extern void panic(const char *message);
 
 #endif				/* !Exceptions_H */
 
-/* 
+/*
  *$Log: exceptions.h,v $
  *Revision 1.3  2007/09/12 07:33:29  spunky
  *This is a working version of the current HellMOO server

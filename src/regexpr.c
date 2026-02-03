@@ -115,7 +115,7 @@ static int regexp_ansi_sequences;
 
 /* This code is for emacs compatibility only. */
 
-#include "config.h"
+#include "oldconfig.h"
 #include "lisp.h"
 #include "buffer.h"
 #include "syntax.h"
@@ -1640,7 +1640,7 @@ main()
 
 char rcsid_regexpr[] = "$Id";
 
-/* 
+/*
  * $Log: regexpr.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

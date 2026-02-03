@@ -18,7 +18,7 @@
 #ifndef My_Time_H
 #define My_Time_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if TIME_H_NEEDS_HELP
 /* Some systems' time.h does not include time_t or clock_t */
@@ -51,7 +51,7 @@ extern char *tzname;
 
 #endif				/* !My_Time_H */
 
-/* 
+/*
  * $Log: my-time.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

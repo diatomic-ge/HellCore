@@ -18,7 +18,7 @@
 #ifndef Tasks_H
 #define Tasks_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 #include "execute.h"
 #include "structures.h"
 
@@ -105,7 +105,7 @@ extern db_verb_handle find_verb_for_programming(Objid player,
 
 #endif				/* !Tasks_H */
 
-/* 
+/*
  * $Log: tasks.h,v $
  * Revision 1.5  2009/08/14 21:35:38  blacklite
  * call #0:task_suspended whenever it happens.

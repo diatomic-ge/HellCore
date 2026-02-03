@@ -18,7 +18,7 @@
 #ifndef Sym_Table_h
 #define Sym_Table_h 1
 
-#include "config.h"
+#include "oldconfig.h"
 #include "version.h"
 
 typedef struct {
@@ -63,7 +63,7 @@ extern void free_names(Names *);
 
 #endif				/* !Sym_Table_h */
 
-/* 
+/*
  * $Log: sym_table.h,v $
  * Revision 1.4  2009/03/08 12:41:31  blacklite
  * Added HASH data type, yield keyword, MEMORY_TRACE, vfscanf(),

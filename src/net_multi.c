@@ -25,7 +25,7 @@
 #include "my-string.h"
 #include "my-unistd.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "exceptions.h"
 #include "list.h"
 #include "log.h"
@@ -724,7 +724,7 @@ network_shutdown(void)
 
 char rcsid_net_multi[] = "$Id: net_multi.c,v 1.3 2007/09/12 07:33:29 spunky Exp $";
 
-/* 
+/*
  * $Log: net_multi.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

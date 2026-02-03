@@ -20,7 +20,7 @@
 #include "my-stdarg.h"
 
 #include "bf_register.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "db_io.h"
 #include "functions.h"
 #include "list.h"

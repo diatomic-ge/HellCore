@@ -20,7 +20,7 @@
 
 #include "my-stdio.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "program.h"
 #include "structures.h"
 
@@ -41,7 +41,7 @@ extern const char *unparse_error(enum error);	/* E_NONE -> "No error" */
 
 #endif
 
-/* 
+/*
  * $Log: unparse.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

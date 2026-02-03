@@ -1,3 +1,5 @@
+/* This is an ancient version of config.h that should be migrated. */
+
 /* config.h.  Generated automatically by configure.  */
 
 /******************************************************************************
@@ -271,7 +273,7 @@
 
 #endif /* !Config_H */
 
-/* 
+/*
  * $Log: config.h.in,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

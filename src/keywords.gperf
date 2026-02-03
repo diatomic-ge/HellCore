@@ -21,7 +21,7 @@
 
 #include "my-string.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "keywords.h"
 #include "tokens.h"
 #include "utils.h"

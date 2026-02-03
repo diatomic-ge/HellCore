@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if ARPA_INET_H_NEEDS_HELP
 /* Some systems don't #include everything they depend on in their headers. */
@@ -24,7 +24,7 @@
 
 #include <arpa/inet.h>
 
-/* 
+/*
  * $Log: my-inet.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

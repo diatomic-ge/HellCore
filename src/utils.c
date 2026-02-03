@@ -19,7 +19,7 @@
 #include "my-stdio.h"
 #include "my-string.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "db_io.h"
 #include "exceptions.h"
@@ -144,7 +144,7 @@ void
 complex_free_var(Var v)
 {
     int i;
- 
+
     switch ((int) v.type) {
     case TYPE_STR:
 	if (v.v.str)
@@ -303,7 +303,7 @@ equality(Var lhs, Var rhs, int case_matters)
 		return 1;
 	    }
 	case TYPE_HASH:
-		return ((hashlength(lhs) == 0 && hashlength(rhs) == 0) 
+		return ((hashlength(lhs) == 0 && hashlength(rhs) == 0)
 			|| lhs.v.list == rhs.v.list);
 	case TYPE_WAIF:
 		return lhs.v.waif == rhs.v.waif;
@@ -542,7 +542,7 @@ binary_to_raw_bytes(const char *binary, int *buflen)
 
 char rcsid_utils[] = "$Id: utils.c,v 1.10 2009/07/22 19:33:52 blacklite Exp $";
 
-/* 
+/*
  * $Log: utils.c,v $
  * Revision 1.10  2009/07/22 19:33:52  blacklite
  * Fixed truth value of null hash [], and made [] == [].
@@ -573,7 +573,7 @@ char rcsid_utils[] = "$Id: utils.c,v 1.10 2009/07/22 19:33:52 blacklite Exp $";
  *
  * Revision 1.3  1997/07/07 03:24:55  nop
  * Merge UNSAFE_OPTS (r5) after extensive testing.
- * 
+ *
  * Revision 1.2.2.3  1997/03/21 15:11:22  bjj
  * add var_refcount interface
  *

@@ -37,7 +37,7 @@
  *
  */
 
-#include "config.h"
+#include "oldconfig.h"
 #include "version.h"
 
 const char *FUP_version = "1.9";

@@ -37,7 +37,7 @@
 #include "my-string.h"
 #include <errno.h>
 
-#include "config.h"
+#include "oldconfig.h"
 #include "log.h"
 #include "server.h"
 #include "storage.h"
@@ -300,7 +300,7 @@ lookup_addr_from_name(const char *name, unsigned timeout)
 
 char rcsid_name_lookup[] = "$Id: name_lookup.c,v 1.4 2010/05/16 02:39:23 blacklite Exp $";
 
-/* 
+/*
  * $Log: name_lookup.c,v $
  * Revision 1.4  2010/05/16 02:39:23  blacklite
  * Break out some IPC stuff into pipe_utils.c, add var serialization, and some unfinished mysql stuff

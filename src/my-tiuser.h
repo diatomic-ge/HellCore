@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 #include <tiuser.h>
 

@@ -18,7 +18,7 @@
 #include "my-string.h"
 
 #include "ast.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "list.h"
 #include "log.h"
 #include "program.h"
@@ -416,7 +416,7 @@ free_stmt(Stmt * stmt)
 
 char rcsid_ast[] = "$Id: ast.c,v 1.5 2009/03/27 20:26:48 blacklite Exp $";
 
-/* 
+/*
  * $Log: ast.c,v $
  * Revision 1.5  2009/03/27 20:26:48  blacklite
  * add optional argument to YIELD statement, make no-arg version into YIELD0 expression/op. add newer ops/exprs to disassembly. handle PF_PRIVATE in execute. make some vars 'register' in execute.

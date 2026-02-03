@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "quota.h"
 #include "structures.h"
@@ -68,7 +68,7 @@ incr_quota(Objid player)
 
 char rcsid_quota[] = "$Id: quota.c,v 1.3 2007/09/12 07:33:29 spunky Exp $";
 
-/* 
+/*
  * $Log: quota.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

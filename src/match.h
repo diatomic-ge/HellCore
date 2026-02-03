@@ -15,12 +15,12 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 #include "structures.h"
 
 extern Objid match_object(Objid player, const char *name);
 
-/* 
+/*
  * $Log: match.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

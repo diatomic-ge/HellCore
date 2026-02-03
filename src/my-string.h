@@ -18,7 +18,7 @@
 #ifndef My_String_H
 #define My_String_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if USE_OWN_STRING_H
 
@@ -85,7 +85,7 @@ extern void *memset(void *, int, size_t);
 
 #endif				/* !My_String_H */
 
-/* 
+/*
  * $Log: my-string.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

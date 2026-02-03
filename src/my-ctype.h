@@ -17,7 +17,7 @@
 #ifndef My_Ctype_H
 #define My_Ctype_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 
 #include <ctype.h>
 
@@ -28,7 +28,7 @@ extern int toupper(int);
 
 #endif				/* !My_Ctype_H */
 
-/* 
+/*
  * $Log: my-ctype.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

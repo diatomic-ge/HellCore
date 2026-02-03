@@ -22,7 +22,7 @@
 #ifndef DB_PRIVATE_h
 #define DB_PRIVATE_h
 
-#include "config.h"
+#include "oldconfig.h"
 #include "exceptions.h"
 #include "program.h"
 #include "structures.h"

@@ -18,7 +18,7 @@
 #ifndef Parse_Cmd_H
 #define Parse_Cmd_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "structures.h"
 
@@ -44,7 +44,7 @@ extern void free_parsed_command(Parsed_Command *);
 
 #endif				/* !Parse_Cmd_H */
 
-/* 
+/*
  * $Log: parse_cmd.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

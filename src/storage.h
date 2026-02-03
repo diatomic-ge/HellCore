@@ -22,7 +22,7 @@
 /* #define MEMORY_TRACE 1 */
 /* #define MEMORY_TRACE_TYPE M_LIST */
 
-#include "config.h"
+#include "oldconfig.h"
 #include "structures.h"
 #include "ref_count.h"
 
@@ -70,7 +70,7 @@ free_str(const char *s)
 
 #endif				/* Storage_h */
 
-/* 
+/*
  * $Log: storage.h,v $
  * Revision 1.5  2009/08/14 16:48:13  blacklite
  * add special handling for memory tracing when FAKE_FREE is on, basically emulate the sort of thing that valgrind et al do, don't free anything, and then abort if old, supposedly-freed memory gets used. also move checks to the front in ref_count.h macros so they happen -before- the actual pointer dereference, so we abort before a double free.

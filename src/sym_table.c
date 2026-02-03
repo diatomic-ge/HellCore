@@ -18,7 +18,7 @@
 #include "my-stdio.h"
 
 #include "ast.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "exceptions.h"
 #include "log.h"
 #include "storage.h"
@@ -59,7 +59,7 @@ first_user_slot(DB_Version version)
 
     if (version >= DBV_Float)
 	count += 2;
-	
+
     if (version >= DBV_Hash)
 	count += 1;
     if (version >= DBV_Waif)
@@ -100,7 +100,7 @@ new_builtin_names(DB_Version version)
 	    bi->names[SLOT_INT] = str_dup("INT");
 	    bi->names[SLOT_FLOAT] = str_dup("FLOAT");
 	}
-	
+
 	if (version >= DBV_Hash) {
 	    bi->names[SLOT_HASH] = str_dup("HASH");
 	}
@@ -160,7 +160,7 @@ free_names(Names * names)
 
 char rcsid_sym_table[] = "$Id: sym_table.c,v 1.4 2009/03/08 12:41:31 blacklite Exp $";
 
-/* 
+/*
  * $Log: sym_table.c,v $
  * Revision 1.4  2009/03/08 12:41:31  blacklite
  * Added HASH data type, yield keyword, MEMORY_TRACE, vfscanf(),

@@ -18,7 +18,7 @@
 #include "my-string.h"
 #include "my-time.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "db_io.h"
 #include "decompile.h"
@@ -570,7 +570,7 @@ do_login_task(tqueue * tq, char *command)
     run_server_task_setting_id(tq->player, tq->handler, "do_login_command",
 			       args, command, &result,
 			       &(tq->last_input_task_id));
-    if (tq->connected && result.type == TYPE_OBJ 
+    if (tq->connected && result.type == TYPE_OBJ
 #ifndef NON_PLAYER_CONNECTIONS
 	    && is_user(result.v.obj)
 #endif
@@ -1312,7 +1312,7 @@ read_task_queue(void)
 	}
 	t->t.suspended.start_tv.tv_sec = st;
 	t->t.suspended.start_tv.tv_usec = 0;
-	
+
 	if (c == ',') {
 	    /* new style */
 	    if (dbio_scanf("%d%c", &ignore_value, &c) != 2) {
@@ -1324,7 +1324,7 @@ read_task_queue(void)
 	} else {
 	    t->t.suspended.ignore_value = 0;
 	}
-	
+
 	if (c == ' ')
 	    t->t.suspended.value = dbio_read_var();
 	else if (c == '\n')
@@ -2074,7 +2074,7 @@ bf_transfer_connection(Var arglist, Byte next, void *vdata, Objid progr)
 
     if (tq->num_bg_tasks) {
 	/* move forked tasks to their own queue
-	 * owned by old oid 
+	 * owned by old oid
 	 */
 	tqueue *old_tq = find_tqueue(old_o, 1);
 
@@ -2084,7 +2084,7 @@ bf_transfer_connection(Var arglist, Byte next, void *vdata, Objid progr)
 	tq->num_bg_tasks = 0;
     }
 
-    if (dead_tq) { 
+    if (dead_tq) {
 	/* tasks laying around (forked, etc)
 	 * owned by new oid, we must grab them
 	 */
@@ -2129,7 +2129,7 @@ register_tasks(void)
 
 char rcsid_tasks[] = "$Id: tasks.c,v 1.10 2010/05/17 07:25:35 blacklite Exp $";
 
-/* 
+/*
  * $Log: tasks.c,v $
  * Revision 1.10  2010/05/17 07:25:35  blacklite
  * last fixes for 1.10.4
@@ -2156,13 +2156,13 @@ char rcsid_tasks[] = "$Id: tasks.c,v 1.10 2010/05/17 07:25:35 blacklite Exp $";
  *
  * Revision 1.4  1997/07/07 03:24:55  nop
  * Merge UNSAFE_OPTS (r5) after extensive testing.
- * 
+ *
  * Revision 1.3.2.3  1998/12/06 07:13:22  bjj
  * Rationalize enqueue_forked_task interface and fix program_ref leak in
  * the case where fork fails with E_QUOTA.  Make .queued_task_limit=0 really
  * enforce a limit of zero tasks (for old behavior set it to 1, that's the
  * effect it used to have).
- * 
+ *
  * Revision 1.3.2.2  1998/11/23 01:10:55  bjj
  * Fix a server crash when force_input() fills the input queue of an
  * unconnected object.  No observable behavior has changed.

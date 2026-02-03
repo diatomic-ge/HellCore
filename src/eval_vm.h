@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 #include "execute.h"
 #include "structures.h"
 
@@ -29,7 +29,7 @@ extern activation top_activ(vm);
 extern Objid progr_of_cur_verb(vm);
 extern unsigned suspended_lineno_of_vm(vm);
 
-/* 
+/*
  * $Log: eval_vm.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

@@ -18,7 +18,7 @@
 #include "my-stdlib.h"
 #include "my-string.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "exceptions.h"
 #include "structures.h"
@@ -137,7 +137,7 @@ match_object(Objid player, const char *name)
 
 char rcsid_match[] = "$Id: match.c,v 1.4 2007/09/12 07:45:10 spunky Exp $";
 
-/* 
+/*
  * $Log: match.c,v $
  * Revision 1.4  2007/09/12 07:45:10  spunky
  * Hacked it so players can't use obj#s to refer to things.

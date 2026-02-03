@@ -20,7 +20,7 @@
 #include "my-stdio.h"
 #include "my-unistd.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "log.h"
 #include "network.h"
 #include "server.h"

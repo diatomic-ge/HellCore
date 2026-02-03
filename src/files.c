@@ -24,7 +24,7 @@
 #include <ctype.h>
 #include "my-time.h"
 #include "my-string.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "functions.h"
 #include "log.h"
 #include "random.h"
@@ -70,7 +70,7 @@ matches(char *subject, const char *pattern)
 {
     Var ans, req;
     int  result;
-    
+
     req = new_list(2);
     req.v.list[1].type = TYPE_STR;
     req.v.list[2].type = TYPE_STR;
@@ -149,14 +149,14 @@ char spec;
     }
     strcpy(external_files,EXTERN_FILES_DIR);
     sprintf(theDirName,"%s%s", external_files, localthePathStr);
-    
+
     if (stat(theDirName, &st) != 0) return E_INVARG;
 
     errno = 0;
     switch (spec)
 	    {
 	    case 'd':
-	      if (!(st.st_mode & S_IFDIR)) return E_INVIND; 	      
+	      if (!(st.st_mode & S_IFDIR)) return E_INVIND;
 	      break;
 	    case 'r':
 	      if ((access (theDirName, R_OK)) !=0) return E_PERM;
@@ -197,30 +197,30 @@ char spec;
     }
 #endif
 
-    if ((strlen(thePathStr) > BUF_LEN) || 
+    if ((strlen(thePathStr) > BUF_LEN) ||
         (strlen(theNameStr) > BUF_LEN))  return E_INVARG;
 
     strcpy(localthePathStr, thePathStr);
     strcpy(localtheNameStr, theNameStr);
     remove_special_characters(localthePathStr);
     remove_special_characters(localtheNameStr);
-    
+
     if (( strstr(localthePathStr,"/.")) ||
        (!strncmp(localthePathStr,".",1)) ||
        (strstr(localtheNameStr,"/"))) {
      return E_PERM;
     }
     strcpy(external_files,EXTERN_FILES_DIR);
-    sprintf(theFileName,"%s%s/%s", external_files, localthePathStr, 
+    sprintf(theFileName,"%s%s/%s", external_files, localthePathStr,
                                    localtheNameStr);
-    
+
     if (stat(theFileName, &st) != 0) return E_INVARG;
 
     errno = 0;
     switch (spec)
 	    {
 	    case 'd':
-	      if (!(st.st_mode & S_IFDIR)) return E_INVIND; 	      
+	      if (!(st.st_mode & S_IFDIR)) return E_INVIND;
 	      break;
 	    case 'r':
 	      if ((access (theFileName, R_OK)) !=0) return E_PERM;
@@ -242,13 +242,13 @@ bf_fileexists(Var arglist, Byte next, void *vdata, Objid progr)
 { /* (directory, filename) */
         char infileName[BUF_LEN];
         Var ret;
-        
+
         ret.type = TYPE_INT;
         ret.v.num = 1;
         if (build_file_name(arglist.v.list[1].v.str,
                             arglist.v.list[2].v.str,
                             infileName,'r') != E_NONE) {
-			ret.v.num = 0;        
+			ret.v.num = 0;
 		}
         free_var(arglist);
         return make_var_pack(ret);
@@ -335,7 +335,7 @@ bf_filewrite(Var arglist, Byte next, void *vdata, Objid progr)
 
         sprintf(outfileName,"%s.%li", infileName,time(0));
 
-        if (arglist.v.list[0].v.num > 3) 
+        if (arglist.v.list[0].v.num > 3)
            start_line = arglist.v.list[4].v.num;
 
        thelength = arglist.v.list[3].v.list[0].v.num;
@@ -398,7 +398,7 @@ bf_filewrite(Var arglist, Byte next, void *vdata, Objid progr)
         }
 
         if (outFile) {fclose(outFile);}
-        if (inFile)  {fclose(inFile);} 
+        if (inFile)  {fclose(inFile);}
         rename(outfileName,infileName);
         free_var(arglist);
         return make_var_pack(ret);
@@ -430,7 +430,7 @@ bf_fileread(Var arglist, Byte next, void *vdata, Objid progr)
 
         if (arglist.v.list[0].v.num > 3)
                 end_line = arglist.v.list[4].v.num;
-     
+
         if ((f = fopen(infileName, "r")) == 0) {
            free_var(arglist);
            return make_error_pack(E_INVARG);
@@ -524,7 +524,7 @@ bf_fileappend(Var arglist, Byte next, void *vdata, Objid progr)
 static package
 bf_fileinsert(Var arglist, Byte next, void *vdata, Objid progr)
 { /* (directory, filename, list, start, end) */
- 
+
         FILE *inFile = NULL;
         FILE *outFile = NULL;
         char infileName[BUF_LEN];
@@ -552,7 +552,7 @@ bf_fileinsert(Var arglist, Byte next, void *vdata, Objid progr)
 
         sprintf(outfileName,"%s.%li", infileName,time(0));
 
-        if (arglist.v.list[0].v.num > 3) 
+        if (arglist.v.list[0].v.num > 3)
            start_line = arglist.v.list[4].v.num;
 
        thelength = arglist.v.list[3].v.list[0].v.num;
@@ -612,7 +612,7 @@ bf_fileinsert(Var arglist, Byte next, void *vdata, Objid progr)
         }
 
         if (outFile) {fclose(outFile);}
-        if (inFile)  {fclose(inFile);} 
+        if (inFile)  {fclose(inFile);}
         rename(outfileName,infileName);
         free_var(arglist);
         return make_var_pack(ret);
@@ -765,11 +765,11 @@ bf_filelist(Var arglist, Byte next, void *vdata, Objid progr)
                     listOfDirs = listappend(listOfDirs, theline);
                 }
                 else {
-                  if ((srchlen == 0) || 
+                  if ((srchlen == 0) ||
                       (matches(dp->d_name,arglist.v.list[2].v.str))) {
                       theline.v.str = str_dup(dp->d_name);
                       listOfFiles = listappend(listOfFiles, theline);
-                  } 
+                  }
                 }
             }
         }
@@ -801,7 +801,7 @@ bf_filegrep(Var arglist, Byte next, void *vdata, Objid progr)
                 free_var(arglist);
                 return make_error_pack(result);
         }
-        
+
         if(arglist.v.list[0].v.num == 4) {
           if(strstr(arglist.v.list[4].v.str,"n")) {
              numbers = TRUE;
@@ -827,7 +827,7 @@ bf_filegrep(Var arglist, Byte next, void *vdata, Objid progr)
         while (!feof(f)) {
             fgets(buffer, BUF_LEN, f);
             line_num++;
-            
+
             if (matches(buffer,arglist.v.list[3].v.str) == showfound) {
                     if ((strings == TRUE) && (!feof(f))) {
                       buffer[strlen(buffer)-1] = '\0';
@@ -862,7 +862,7 @@ bf_fileextract(Var arglist, Byte next, void *vdata, Objid progr)
         int status = 1;
         int requiredPattern = (arglist.v.list[0].v.num > 4);
         int result;
-        
+
         result = build_file_name(arglist.v.list[1].v.str,
                             arglist.v.list[2].v.str,
                             infileName,
@@ -877,7 +877,7 @@ bf_fileextract(Var arglist, Byte next, void *vdata, Objid progr)
             (strlen(arglist.v.list[4].v.str) == 0) ||
             (strlen(arglist.v.list[arglist.v.list[0].v.num].v.str) == 0)) {
           free_var(arglist);
-          return make_error_pack(E_INVARG); 
+          return make_error_pack(E_INVARG);
         }
 
          if ((f = fopen(infileName, "r")) == 0) {
@@ -894,14 +894,14 @@ bf_fileextract(Var arglist, Byte next, void *vdata, Objid progr)
 
         endList = new_list(0);
         endList.type = TYPE_LIST;
-        
+
         startLine.type = TYPE_INT;
         endLine.type = TYPE_INT;
- 
+
         while (!feof(f)) {
             fgets(buffer, BUF_LEN, f);
             numOfLine++;
-            
+
             if (status == 1) {
                if (matches(buffer,arglist.v.list[3].v.str)) {
 	                startLine.v.num = numOfLine;
@@ -911,13 +911,13 @@ bf_fileextract(Var arglist, Byte next, void *vdata, Objid progr)
                             status = 3;}
 	            }
             }
-            
+
             if (status == 2) {
                if (matches(buffer,arglist.v.list[arglist.v.list[0].v.num].v.str)) {
 	            	status = 3;
 	            }
             }
-            
+
             if ((status == 2) || (status == 3)) {
               if (matches(buffer,arglist.v.list[4].v.str)) {
                         if (status == 3) {
@@ -931,7 +931,7 @@ bf_fileextract(Var arglist, Byte next, void *vdata, Objid progr)
         }
 
         ret = listappend(ret,startList);
-        ret = listappend(ret,endList);        
+        ret = listappend(ret,endList);
         fclose(f);
         free_var(arglist);
         return make_var_pack(ret);
@@ -992,7 +992,7 @@ bf_filechmod(Var arglist, Byte next, void *vdata, Objid progr)
         struct stat st;
         mode_t  mode;
         char filemode[BUF_LEN];
-        int r1, r2; 
+        int r1, r2;
         int result;
         result = build_file_name(arglist.v.list[1].v.str,
                             arglist.v.list[2].v.str,
@@ -1050,7 +1050,7 @@ bf_fileinfo(Var arglist, Byte next, void *vdata, Objid progr)
         struct passwd *pw;
         struct group *grp;
         mode_t  mode;
-        int r0, r1, r2; 
+        int r0, r1, r2;
         char filemode[BUF_LEN];
         int result;
         result = build_file_name(arglist.v.list[1].v.str,
@@ -1130,7 +1130,7 @@ bf_fileinfo(Var arglist, Byte next, void *vdata, Objid progr)
 
         ctime.type = TYPE_INT;
         ctime.v.num = st.st_ctime;
-        
+
         ret.type = TYPE_LIST;
         ret = new_list(0);
         ret = listappend(ret, fsize); /* total size of file, bytes */
@@ -1165,7 +1165,7 @@ bf_filerun(Var arglist, Byte next, void *vdata, Objid progr)
 	        switch (arglist.v.list[i].type) {
 	          case TYPE_STR:
                 theline.v.str = str_dup(arglist.v.list[i].v.str);
-                remove_special_characters( theline.v.str); 
+                remove_special_characters( theline.v.str);
 
                 if (( strstr(theline.v.str,"/.")) ||
                    (!strncmp(theline.v.str,".",1)) ||
@@ -1186,7 +1186,7 @@ bf_filerun(Var arglist, Byte next, void *vdata, Objid progr)
                        (arglist.v.list[i].v.list[2].type != TYPE_STR)) {
 			            free_var(arglist);
                                     free_var(theline);
-			            return make_error_pack(E_TYPE); 
+			            return make_error_pack(E_TYPE);
                        }
                     result = build_file_name(arglist.v.list[i].v.list[1].v.str,
                                              arglist.v.list[i].v.list[2].v.str,
@@ -1200,9 +1200,9 @@ bf_filerun(Var arglist, Byte next, void *vdata, Objid progr)
                 free_var(arglist);
                 free_var(theline);
                 return make_error_pack(E_INVARG);
-	        }        
+	        }
         }
-       
+
        numOfArgs = theArgs.v.list[0].v.num;
        strcpy(external_bin,EXTERN_BIN_DIR);
        sprintf(theRequestedAction,"%s%s ",external_bin,theArgs.v.list[1].v.str);
@@ -1284,7 +1284,7 @@ bf_filermdir(Var arglist, Byte next, void *vdata, Objid prog)
 
     if ((rmdir(rmDirName)) != 0) {
         free_var(arglist);
-        return make_error_pack(E_PERM); 
+        return make_error_pack(E_PERM);
     }
     free_var(arglist);
     ret.type = TYPE_INT;
@@ -1304,7 +1304,7 @@ bf_fileerror(Var arglist, Byte next, void *vdata, Objid progr)
 
 void
 register_files(void)
-{ 
+{
     (void) register_function("fileappend",  3,  3, bf_fileappend,  TYPE_STR, TYPE_STR, TYPE_LIST);
 
 #ifdef INCLUDE_FILECHMOD
@@ -1325,7 +1325,7 @@ register_files(void)
     (void) register_function("filermdir",   2,  2, bf_filermdir,   TYPE_STR, TYPE_STR);
 
 #ifdef INCLUDE_FILERUN
-    (void) register_function("filerun",     1, -1, bf_filerun,     TYPE_STR, TYPE_LIST, TYPE_LIST); 
+    (void) register_function("filerun",     1, -1, bf_filerun,     TYPE_STR, TYPE_LIST, TYPE_LIST);
 #endif
 
     (void) register_function("filesize",    2,  2, bf_filesize,    TYPE_STR, TYPE_STR);

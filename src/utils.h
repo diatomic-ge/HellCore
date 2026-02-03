@@ -22,7 +22,7 @@
 #include "my-stdlib.h"
 
 #include "log.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "execute.h"
 
 #undef MAX
@@ -114,7 +114,7 @@ extern const char *binary_to_raw_bytes(const char *binary, int *rawlen);
 
 #endif
 
-/* 
+/*
  * $Log: utils.h,v $
  * Revision 1.4  2009/10/11 00:27:15  blacklite
  * check var sanity  -- quick checks that hopefully cut off corruption before we end up dumping db with fucked types

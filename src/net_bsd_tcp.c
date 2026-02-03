@@ -30,7 +30,7 @@
 #include "my-string.h"		/* memcpy() */
 #include "my-unistd.h"		/* close() */
 
-#include "config.h"
+#include "oldconfig.h"
 #include "list.h"
 #include "log.h"
 #include "name_lookup.h"
@@ -279,7 +279,7 @@ proto_open_connection(Var arglist, int *read_fd, int *write_fd,
 
 char rcsid_net_bsd_tcp[] = "$Id: net_bsd_tcp.c,v 1.5 2009/10/11 00:23:43 blacklite Exp $";
 
-/* 
+/*
  * $Log: net_bsd_tcp.c,v $
  * Revision 1.5  2009/10/11 00:23:43  blacklite
  * rollback raw ip address add

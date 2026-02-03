@@ -18,7 +18,7 @@
 #ifndef My_In_H
 #define My_In_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 
 #include "my-types.h"
 #include <netinet/in.h>
@@ -40,7 +40,7 @@ extern unsigned32 ntohl();
 
 #endif
 
-/* 
+/*
  * $Log: my-in.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

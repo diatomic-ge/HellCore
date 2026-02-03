@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if UNDEF_IO_IN_STROPTS_H
 /* prevent conflict with <sys/ioctl.h> */

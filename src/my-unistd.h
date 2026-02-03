@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if HAVE_UNISTD_H  &&  !NDECL_FORK
 
@@ -42,7 +42,7 @@ extern int write(int, const void *, unsigned);
 
 #endif
 
-/* 
+/*
  * $Log: my-unistd.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

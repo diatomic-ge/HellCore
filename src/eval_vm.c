@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db_io.h"
 #include "decompile.h"
 #include "eval_vm.h"
@@ -122,7 +122,7 @@ read_vm(int task_id)
 
 char rcsid_eval_vm[] = "$Id: eval_vm.c,v 1.3 2007/09/12 07:33:29 spunky Exp $";
 
-/* 
+/*
  * $Log: eval_vm.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

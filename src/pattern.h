@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 typedef struct {
     int start, end;
@@ -34,7 +34,7 @@ extern Match_Result match_pattern(Pattern p, const char *string,
 				Match_Indices * indices, int is_reverse);
 extern void free_pattern(Pattern p);
 
-/* 
+/*
  * $Log: pattern.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

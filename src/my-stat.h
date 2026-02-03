@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if SYS_STAT_H_NEEDS_HELP
 #  include "my-types.h"
@@ -36,7 +36,7 @@ extern int mknod(const char *file, int mode, int dev);
 #define mkfifo(path, mode)	mknod(path, S_IFIFO | (mode), 0)
 #endif
 
-/* 
+/*
  * $Log: my-stat.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

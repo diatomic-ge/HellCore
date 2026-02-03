@@ -201,7 +201,7 @@
  * .name and .location), define IGNORE_PROP_PROTECTED.  The extra
  * property lookups on every reference to a built-in property are
  * expensive.
- ****************************************************************************** 
+ ******************************************************************************
  */
 
 #define IGNORE_PROP_PROTECTED
@@ -220,7 +220,7 @@
  * the next time (if it's in a loop) it will have the only reference to the
  * copy and then it can take advantage.
  *
- * NOTE WELL    NOTE WELL    NOTE WELL    NOTE WELL    NOTE WELL    
+ * NOTE WELL    NOTE WELL    NOTE WELL    NOTE WELL    NOTE WELL
  *
  * This option affects the length of certain bytecode sequences.
  * Suspended tasks in a database from a server built with this option
@@ -231,7 +231,7 @@
  * lifted in a future version of the server software.  Consider this
  * option as being BETA QUALITY until then.
  *
- * NOTE WELL    NOTE WELL    NOTE WELL    NOTE WELL    NOTE WELL    
+ * NOTE WELL    NOTE WELL    NOTE WELL    NOTE WELL    NOTE WELL
  *
  ****************************************************************************** */
 #define BYTECODE_REDUCE_REF
@@ -243,12 +243,12 @@
 
 
 /******************************************************************************
- * List reallocations can take time. PADDED_LIST_ALLOC enables allocations of 
- * more space than is actually needed for lists, so that appending to lists 
+ * List reallocations can take time. PADDED_LIST_ALLOC enables allocations of
+ * more space than is actually needed for lists, so that appending to lists
  * requires far less shuffling of memory. This all happens transparently
  * through myrealloc.
  *
- * IMPORTANT: I didn't actually profile any of this, so I could be totally 
+ * IMPORTANT: I didn't actually profile any of this, so I could be totally
  * wrong about the whole speed gain thing. :D
  *
  * EVEN MORE IMPORTANT: This doesn't actually work yet.
@@ -280,7 +280,7 @@
 /******************
  * PROFILING      *
  *  when any of the following defines are true, profile data is dumped to
- *  a profile file given on the command line by the -p switch, or 
+ *  a profile file given on the command line by the -p switch, or
  *  to stderr. NOTE: these profile logs are huge. PROFILE_VERBS gives
  *  ~400 MB for 5 minutes of operation of our busy moo.
  ******************/
@@ -333,7 +333,7 @@
 #define MP_POLL		2
 #define MP_FAKE		3
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if NETWORK_PROTOCOL != NP_SINGLE  &&  !defined(MPLEX_STYLE)
 #  if NETWORK_STYLE == NS_BSD
@@ -388,7 +388,7 @@
 
 #endif				/* !Options_h */
 
-/* 
+/*
  * $Log: options.h,v $
  * Revision 1.9  2010/05/16 02:39:23  blacklite
  * Break out some IPC stuff into pipe_utils.c, add var serialization, and some unfinished mysql stuff

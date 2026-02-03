@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 #include "eval_env.h"
 #include "storage.h"
 #include "structures.h"
@@ -133,7 +133,7 @@ set_rt_env_var(Var * env, int slot, Var v)
 char rcsid_rt_env[] = "$Id: eval_env.c,v 1.4 2009/03/08 12:41:31 blacklite Exp $";
 
 
-/* 
+/*
  * $Log: eval_env.c,v $
  * Revision 1.4  2009/03/08 12:41:31  blacklite
  * Added HASH data type, yield keyword, MEMORY_TRACE, vfscanf(),

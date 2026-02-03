@@ -1,7 +1,7 @@
 /******************************************************************************
   2009 The Hell Syndicate.
 
-  Rights considered an annoyance of oppressive litigious society and 
+  Rights considered an annoyance of oppressive litigious society and
   neither reserved nor recognized. Besides, how did you get this code?
 
   -- seraph
@@ -14,7 +14,7 @@
 #include "my-time.h"
 
 #include "bf_register.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "functions.h"
 #include "log.h"
 #include "options.h"
@@ -83,7 +83,7 @@ profile_log(const char *fmt,...)
 
 char rcsid_profiler[] = "$Id: profiler.c,v 1.3 2009/10/11 00:27:57 blacklite Exp $";
 
-/* 
+/*
  * $Log: profiler.c,v $
  * Revision 1.3  2009/10/11 00:27:57  blacklite
  * remove old ref to global.h

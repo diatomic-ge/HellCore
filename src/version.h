@@ -18,7 +18,7 @@
 #ifndef Version_H
 #define Version_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 
 extern const char *FUP_version;
 extern const char *server_version;
@@ -60,7 +60,7 @@ extern int check_version(DB_Version);
 
 #endif				/* !Version_H */
 
-/* 
+/*
  * $Log: version.h,v $
  * Revision 1.4  2009/03/08 12:41:31  blacklite
  * Added HASH data type, yield keyword, MEMORY_TRACE, vfscanf(),

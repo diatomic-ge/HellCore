@@ -19,7 +19,7 @@
 #include "my-stdio.h"
 
 #include "ast.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "decompile.h"
 #include "exceptions.h"
 #include "functions.h"
@@ -638,7 +638,7 @@ unparse_expr(Stream * str, Expr * expr)
     case EXPR_ID:
 	stream_add_string(str, prog->var_names[expr->e.id]);
 	break;
-	
+
     case EXPR_HASH:
 	stream_add_char(str, '[');
 	/* we have an arglist here that has a list inside of it */
@@ -763,7 +763,7 @@ unparse_to_stderr(Program * p, int fully_parenthesize, int indent_lines,
 
 char rcsid_unparse[] = "$Id: unparse.c,v 1.5 2009/03/27 20:26:49 blacklite Exp $";
 
-/* 
+/*
  * $Log: unparse.c,v $
  * Revision 1.5  2009/03/27 20:26:49  blacklite
  * add optional argument to YIELD statement, make no-arg version into YIELD0 expression/op. add newer ops/exprs to disassembly. handle PF_PRIVATE in execute. make some vars 'register' in execute.

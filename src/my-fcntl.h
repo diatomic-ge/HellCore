@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 #include <fcntl.h>
 
@@ -31,7 +31,7 @@ extern int open(const char *, int,...);
 #define NONBLOCK_FLAG O_NDELAY
 #endif
 
-/* 
+/*
  * $Log: my-fcntl.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

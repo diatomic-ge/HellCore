@@ -23,7 +23,7 @@
 #include "my-stdlib.h"
 #include "my-string.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "db_private.h"
 #include "db_tune.h"

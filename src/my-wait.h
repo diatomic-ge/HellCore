@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 #include <sys/wait.h>
 
 #if NDECL_WAITPID
@@ -24,7 +24,7 @@
 extern pid_t waitpid(pid_t, int *, int);
 #endif
 
-/* 
+/*
  * $Log: my-wait.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

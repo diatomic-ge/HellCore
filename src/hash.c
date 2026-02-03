@@ -1,7 +1,7 @@
 /******************************************************************************
   2009 The Hell Syndicate.
 
-  Rights considered an annoyance of oppressive litigious society and 
+  Rights considered an annoyance of oppressive litigious society and
   neither reserved nor recognized. Besides, how did you get this code?
 
   -- seraph
@@ -13,7 +13,7 @@
 #include "my-stdarg.h"
 
 #include "bf_register.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "exceptions.h"
 #include "functions.h"
 #include "hash.h"
@@ -44,7 +44,7 @@ hashlittle( const void *key, size_t length, uint32_t initval);
 
 #define HASH_ALLOCATION_SIZE (INITIAL_HASH_SIZE + HASH_RESERVED)
 
-/* we're not trying to be hacker-proof or anything, so 
+/* we're not trying to be hacker-proof or anything, so
  * let's not bother with random() and seeding and all that
  */
 #define HASH_INITVAL 1694232671
@@ -59,7 +59,7 @@ alloc_list_for_hash(int size)
     new.v.list = (Var *) mymalloc((size + 1) * sizeof(Var), M_HASH);
     new.v.list[0].type = TYPE_INT;
     new.v.list[0].v.num = size;
-    return new;	
+    return new;
 }
 
 Var
@@ -67,16 +67,16 @@ new_hash(void)
 {
 	Var new;
 	int i;
-	
+
 	new = alloc_list_for_hash(HASH_ALLOCATION_SIZE);
-	
-	/* we reserve 1 Var for the number of set elements 
+
+	/* we reserve 1 Var for the number of set elements
 	 * in the hash, so we start zeroing from 1, which
 	 * includes our reserved space. */
 	for (i = 1; i <= HASH_ALLOCATION_SIZE; i++) {
 		new.v.list[i] = zero;
 	}
-	
+
     	return new;
 }
 
@@ -126,12 +126,12 @@ static int
 index_for(Var hash, Var key)
 {
 	unsigned int index;
-	
+
 	if (key.type == TYPE_STR) {
 		index = hashlittle(key.v.str, strlen(key.v.str), HASH_INITVAL);
 	} else if (key.type == TYPE_FLOAT) {
 		index = hashlittle(key.v.fnum, sizeof(double), HASH_INITVAL);
-	} else if (key.type == TYPE_INT || key.type == TYPE_OBJ 
+	} else if (key.type == TYPE_INT || key.type == TYPE_OBJ
 		   || key.type == TYPE_ERR) {
 		index = hashlittle(&(key.v.num), sizeof(int32), HASH_INITVAL);
 	} else {
@@ -139,7 +139,7 @@ index_for(Var hash, Var key)
 	}
 	index = index & (hash_end(hash) - HASH_RESERVED - 1);
 	index = index + HASH_START;
-		
+
 	return index;
 }
 
@@ -157,21 +157,21 @@ hashset(Var hash, Var key, Var value)
 	}
 
 	hash = hashexpand_in_advance(hash, 1);
-	
+
 	if (hash.type == TYPE_ERR) {
 		return hash;
 	}
 
 	index = index_for(hash, key);
 	chain = hash.v.list[index];
-	
+
 	if (hash.v.list[index].type != TYPE_LIST) {
 		/* free spot -- easy as pie */
 		chain = new_list(2);
 
 		chain.v.list[1] = key;
 		chain.v.list[2] = value;
-		
+
 		listset(hash,chain,index);
 		inc_keycount(hash);
 		return hash;
@@ -179,16 +179,16 @@ hashset(Var hash, Var key, Var value)
 
 	/* no free spot, let's see if it's here somewhere... */
 	int subindex;
-	
+
 	for (subindex = 1; subindex <= chain.v.list[0].v.num; subindex += 2) {
-		if (equality(chain.v.list[subindex], key, 1)) {			
+		if (equality(chain.v.list[subindex], key, 1)) {
 			free_var(key); /* since we already have it */
 			free_var(chain.v.list[subindex+1]);
 			chain.v.list[subindex+1] = value;
 			return hash;
 		}
 	}
-	
+
 	/* it's not in the chain, tack it on the end */
 	int size = chain.v.list[0].v.num;
 
@@ -198,19 +198,19 @@ hashset(Var hash, Var key, Var value)
 		chain.v.list[0].v.num = size + 2;
 		chain.v.list[size + 1] = key;
 		chain.v.list[size + 2] = value;
-		
+
 		hash.v.list[index] = chain;
 	} else {
 		Var new_chain;
 		int i;
-		
+
 		new_chain = new_list(size + 2);
 		for (i = 1; i <= size; i++)
 			new_chain.v.list[i] = var_ref(chain.v.list[i]);
-		
+
 		new_chain.v.list[size + 1] = key;
 		new_chain.v.list[size + 2] = value;
-		
+
 		free_var(chain);
 		hash.v.list[index] = new_chain;
 	}
@@ -225,13 +225,13 @@ hashget(Var hash, Var key)
 	int index;
 	int subindex;
 	static Var novalue;
-	
+
 	if (novalue.type == 0) {
 		novalue.type = TYPE_NONE;
 	}
-	
+
 	index = index_for(hash, key);
-	
+
 	if (hash.v.list[index].type == TYPE_LIST) {
 		for (subindex = 1; subindex <= hash.v.list[index].v.list[0].v.num; subindex += 2) {
 			if (equality(hash.v.list[index].v.list[subindex], key, 1)) {
@@ -246,7 +246,7 @@ int
 hashcontains(Var hash, Var key)
 {
 	int index;
-	
+
 	index = index_for(hash, key);
 
 	if (hash.v.list[index].type == TYPE_LIST) {
@@ -261,11 +261,11 @@ hashcontains(Var hash, Var key)
 	return 0;
 }
 
-/* 
+/*
  * set hashentry to the key & value of the next item
  * and return something to be passed back in next
  * time. if we return INT > sizeofhash, stop.
- * 
+ *
  * when starting, iterator must be INT 1.
  */
 
@@ -274,7 +274,7 @@ hashiterate(Var hash, Var * hashentry, Var iterator)
 {
 	int index, subindex, found = 0, madeloop = 0;
 	Var realentry;
-	
+
 	if (iterator.type == TYPE_INT && iterator.v.num == 1) {
 		/* start a new iteration, if we have any keys */
 		if (keycount(hash) < 1) {
@@ -282,7 +282,7 @@ hashiterate(Var hash, Var * hashentry, Var iterator)
 			iterator.v.err = E_NONE;
 			return iterator;
 		}
-		
+
 		/* iterator = {x,y} indicating index & subindex in hash */
 		iterator = new_list(2);
 		iterator.v.list[1].type  = TYPE_INT;
@@ -290,7 +290,7 @@ hashiterate(Var hash, Var * hashentry, Var iterator)
 		iterator.v.list[2].type  = TYPE_INT;
 		iterator.v.list[2].v.num = 1;
 	}
-	
+
 	index    = iterator.v.list[1].v.num;
 	subindex = iterator.v.list[2].v.num;
 
@@ -298,7 +298,7 @@ hashiterate(Var hash, Var * hashentry, Var iterator)
 		Var chain = hash.v.list[index];
 		if (chain.type != TYPE_LIST)
 			continue;
-		
+
 		if (madeloop)
 			subindex = 1;
 		for (; subindex <= chain.v.list[0].v.num; subindex += 2) {
@@ -315,7 +315,7 @@ hashiterate(Var hash, Var * hashentry, Var iterator)
 			realentry.v.list[2] = var_dup(chain.v.list[subindex+1]);
 			hashentry->type   = TYPE_LIST;
 			hashentry->v.list = realentry.v.list;
-			
+
 			found = 1;
 		}
 		madeloop = 1;
@@ -387,10 +387,10 @@ hashdel(Var hash, Var key)
 	} else {
 		int subindex, lastentry;
 		lastentry = hash.v.list[index].v.list[0].v.num;
-		
+
 		for (subindex = 1; subindex <= lastentry; subindex += 2) {
 			if (equality(hash.v.list[index].v.list[subindex], key, 1)) {
-				delete_from_chain(hash, index, subindex, lastentry);				
+				delete_from_chain(hash, index, subindex, lastentry);
 				dec_keycount(hash);
 				return hash;
 			}
@@ -406,7 +406,7 @@ _do_hash_resize(Var old, int newsize)
 {
 	int i;
 	Var entry;
-	
+
 	Var new = alloc_list_for_hash(newsize + HASH_RESERVED);
 	if (new.v.list[0].v.num == 0) {
 		panic("Got 0-length list from alloc_list_for_hash!");
@@ -424,13 +424,13 @@ _do_hash_resize(Var old, int newsize)
 		entry = old.v.list[i];
 		if (entry.type != TYPE_LIST)
 			continue;
-		
+
 		int subindex;
-		
+
 		for (subindex = 1; subindex <= entry.v.list[0].v.num; subindex += 2)
 			new = hashset(new, var_ref(entry.v.list[subindex]), var_ref(entry.v.list[subindex+1]));
 	}
-	
+
 	/* and we're all done. chuck the old one. */
 	free_var(old);
 	return new;
@@ -440,14 +440,14 @@ static Var
 hashexpand_in_advance(Var hash, int keys_to_add)
 {
 	int limit;
-	
+
 	if (hash_slots(hash) < 1 || keycount(hash) < 0) {
 		errlog("Got %i hash_slots, %i keycount hash in hashexpand_in_advance\n", hash_slots(hash), keycount(hash));
 		panic("Can't continue with broken hash");
 	}
-	
+
 	limit = (hash_slots(hash) >> 2) + (hash_slots(hash) >> 1);
-	
+
 	/* this is fastmath for (keycount >= current_size * 3/4) */
 	if (keycount(hash) >= limit) {
 		return hashexpand(hash);
@@ -465,7 +465,7 @@ hashexpand(Var old)
 		e.v.err = E_QUOTA;
 		errlog("hash was at size %d -- can't expand.\n", hash_slots(old));
 		free_var(old);
-		
+
 		return e;
 	} else {
 		/* bigger! */
@@ -478,14 +478,14 @@ optimize_hash(Var hash)
 {
 	int newsize;
 	Var new = var_ref(hash);
-	
+
 	newsize = hash_slots(hash) >> 1;
-	
+
 	while (keycount(hash) <= newsize && newsize >= INITIAL_HASH_SIZE) {
 		new = _do_hash_resize(new, newsize);
 		newsize = newsize >> 1;
 	}
-	
+
 	free_var(hash);
 	return new;
 }
@@ -496,21 +496,21 @@ _hash_keys_or_values(Var hash, int get_values)
 {
 	int i, keynum;
 	Var list, entry;
-	
+
 	list = new_list(keycount(hash));
 	keynum = 1;
-	
+
 	for (i = HASH_START; i <= hash_end(hash); i++) {
 		entry = hash.v.list[i];
 		if (entry.type != TYPE_LIST)
 			continue;
-		
+
 		int subindex;
-		
+
 		for (subindex = 1; subindex <= entry.v.list[0].v.num; subindex += 2)
 			list.v.list[keynum++] = var_ref(entry.v.list[subindex + get_values]);
 	}
-	
+
 	return list;
 }
 
@@ -553,7 +553,7 @@ bf_hash(Var arglist, Byte next, void *vdata, Objid progr)
 		return make_error_pack(E_TYPE);
 	}
 	r = hashset(r, var_ref(entry.v.list[1]), var_ref(entry.v.list[2]));
-	
+
 	if (r.type == TYPE_ERR) {
 		free_var(arglist);
 		return make_error_pack(r.v.err);
@@ -577,7 +577,7 @@ bf_hashremove(Var arglist, Byte next, void *vdata, Objid progr)
 	case TYPE_OBJ:
 	case TYPE_ERR:
 		hash = arglist.v.list[1];
-		
+
 		if (var_refcount(hash) == 1)
 			r = var_ref(hash);
 	    	else {
@@ -593,7 +593,7 @@ bf_hashremove(Var arglist, Byte next, void *vdata, Objid progr)
     }
 
     free_var(arglist);
-    return make_var_pack(r);	
+    return make_var_pack(r);
 }
 
 static package
@@ -602,7 +602,7 @@ bf_optimize(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     r = optimize_hash(var_ref(arglist.v.list[1]));
     free_var(arglist);
-    return make_var_pack(r);	
+    return make_var_pack(r);
 }
 
 static package
@@ -611,7 +611,7 @@ bf_keys(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     r = hashkeys(arglist.v.list[1]);
     free_var(arglist);
-    return make_var_pack(r);	
+    return make_var_pack(r);
 }
 
 static package
@@ -635,7 +635,7 @@ register_hash(void)
 
 char rcsid_hash[] = "$Id: hash.c,v 1.8 2009/10/11 18:31:46 blacklite Exp $";
 
-/* 
+/*
  * $Log: hash.c,v $
  * Revision 1.8  2009/10/11 18:31:46  blacklite
  * remove unused newsize

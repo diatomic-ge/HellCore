@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if SYS_SOCKET_H_NEEDS_HELP
 /* Some systems aren't sufficiently careful about headers including the other
@@ -43,7 +43,7 @@ extern int connect(int, struct sockaddr *, int);
 extern int shutdown(int, int);
 #endif
 
-/* 
+/*
  * $Log: my-socket.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

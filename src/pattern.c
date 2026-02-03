@@ -19,7 +19,7 @@
 #include "my-stdlib.h"
 #include "my-string.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "pattern.h"
 #include "regexpr.h"
 #include "storage.h"
@@ -176,7 +176,7 @@ free_pattern(Pattern p)
 
 char rcsid_pattern[] = "$Id";
 
-/* 
+/*
  * $Log: pattern.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

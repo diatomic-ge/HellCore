@@ -66,7 +66,7 @@ DISTCLEANFILES = keywords-s.c
 # All of the headers.
 # (This tells automake to make sure that these are not installed, but are
 # included in any dist tarballs, even if not listed in any _SOURCES variables.)
-noinst_HEADERS = ast.h bf_register.h code_gen.h config.h db.h db_io.h \
+noinst_HEADERS = ast.h bf_register.h code_gen.h oldconfig.h db.h db_io.h \
                  db_private.h db_tune.h decompile.h disassemble.h eval_env.h \
                  eval_vm.h exceptions.h execute.h functions.h getpagesize.h \
                  hash.h hash_lookup.h keywords.h list.h log.h match.h md5.h \

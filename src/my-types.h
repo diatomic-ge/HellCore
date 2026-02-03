@@ -18,7 +18,7 @@
 #ifndef My_Types_h
 #define My_Types_h 1
 
-#include "config.h"
+#include "oldconfig.h"
 
 /* The Linux manpage for select indicates that sys/time.h is necessary
    for the FD_ZERO et al declarations.  If this causes problems on
@@ -41,7 +41,7 @@
 
 #endif				/* !My_Types_h */
 
-/* 
+/*
  * $Log: my-types.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

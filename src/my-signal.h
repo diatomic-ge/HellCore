@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if SIGNAL_H_NEEDS_HELP
 /* Some systems' headers don't include all of the headers they need. */
@@ -47,7 +47,7 @@ extern int sigrelse(int);
 #define SIGCHLD SIGCLD
 #endif
 
-/* 
+/*
  * $Log: my-signal.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

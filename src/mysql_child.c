@@ -35,7 +35,7 @@
 #include "execute.h"
 #include "functions.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "list.h"
 #include "log.h"
 #include "server.h"
@@ -166,7 +166,7 @@ typedef struct mysql_task {
 	struct mysql_task *next;
 /*	struct mysql_pipe *pipe; */
 	vm the_vm;
-	struct sql_request req;	
+	struct sql_request req;
 	char *to_send;
 } mysql_task;
 
@@ -188,7 +188,7 @@ close_pipe(mysql_pipe *p)
 {
 	return;
 
-	/* 
+	/*
 	if (!p->is_open)
 		return;
 	network_unregister_fd(p->from_mysql_fd);
@@ -212,7 +212,7 @@ prepare_pipe(void)
 	t->req.len = 0;
 	t->to_send = 0;
 */
-	
+
 	p->handle = -1;
 	p->n_active = 1;
 /*	p->tasks = t; */
@@ -243,7 +243,7 @@ static mysql_pipe*
 find_pipe_for_handle(int h)
 {
 	mysql_pipe *p = all_pipes;
-	
+
 	while (p) {
 		if (p->handle == h)
 			return p;
@@ -393,30 +393,30 @@ bf_mysql_new_handle(Var arglist, Byte next, void *vdata, Objid progr)
 	p->t->req.length = 0;
 	p->t->to_send = 0;
 	free_var(arglist);
-   
-	return make_suspend_pack(mysql_suspender, p->t); 
+
+	return make_suspend_pack(mysql_suspender, p->t);
 }
 */
 
-static package  
+static package
 bf_mysql_next_row(Var arglist, Byte next, void *vdata, Objid progr)
-{    
+{
 	mysql_task* t = mymalloc(sizeof(mysql_task), M_TASK);
 
 	t->next = tasks;
 	tasks = t;
-	
+
     t->req.kind = SQLREQ_GET_ROW;
 	t->req.length = 0;
     t->to_send = 0;
     free_var(arglist);
-        
+
     return make_suspend_pack(mysql_suspender, t);
 }
 
-static package  
+static package
 bf_mysql_query(Var arglist, Byte next, void *vdata, Objid progr)
-{           
+{
     mysql_task* t = mymalloc(sizeof(mysql_task), M_TASK);
 
     t->next = tasks;
@@ -426,7 +426,7 @@ bf_mysql_query(Var arglist, Byte next, void *vdata, Objid progr)
     t->to_send = serialize(arglist);
     t->req.length = strlen(t->to_send);
     free_var(arglist);
-        
+
     return make_suspend_pack(mysql_suspender, t);
 }
 
@@ -462,7 +462,7 @@ register_mysql()
 
 char rcsid_mysql_child[] = "$Id: mysql_child.c,v 1.1 2010/05/16 02:39:23 blacklite Exp $";
 
-/* 
+/*
  * $Log: mysql_child.c,v $
  * Revision 1.1  2010/05/16 02:39:23  blacklite
  * Break out some IPC stuff into pipe_utils.c, add var serialization, and some unfinished mysql stuff

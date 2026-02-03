@@ -18,7 +18,7 @@
 #include "my-stdio.h"
 
 #include "bf_register.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "functions.h"
 #include "list.h"
@@ -479,7 +479,7 @@ register_disassemble(void)
 
 char rcsid_disassemble[] = "$Id";
 
-/* 
+/*
  * $Log: disassemble.c,v $
  * Revision 1.4  2009/03/27 20:26:49  blacklite
  * add optional argument to YIELD statement, make no-arg version into YIELD0 expression/op. add newer ops/exprs to disassembly. handle PF_PRIVATE in execute. make some vars 'register' in execute.

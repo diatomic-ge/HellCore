@@ -27,7 +27,7 @@
 #include "my-stat.h"
 #include "my-unistd.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "options.h"
 
 int

@@ -20,7 +20,7 @@
 #include "my-string.h"
 #include "my-stdio.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "log.h"
 #include "storage.h"
 #include "streams.h"
@@ -229,7 +229,7 @@ stream_length(Stream * s)
 
 char rcsid_streams[] = "$Id: streams.c,v 1.3 2007/09/12 07:33:29 spunky Exp $";
 
-/* 
+/*
  * $Log: streams.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

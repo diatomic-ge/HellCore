@@ -27,7 +27,7 @@
 #include <sys/un.h>		/* struct sockaddr_un */
 #include "my-unistd.h"		/* close() */
 
-#include "config.h"
+#include "oldconfig.h"
 #include "log.h"
 #include "net_proto.h"
 #include "storage.h"

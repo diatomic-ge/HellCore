@@ -21,7 +21,7 @@
 
 #include "my-string.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "db_private.h"
 #include "list.h"
@@ -400,7 +400,7 @@ db_for_all_children(Objid oid, int (*func) (void *, Objid), void *data)
  * in all cases, set what->next = NOTHING.
  */
 void remove_from_contents(Objid locnum, Objid thisnum) {
-    
+
     if (objects[locnum]->contents == thisnum) {
       if (objects[locnum]->lastcontents == thisnum) {
         objects[locnum]->contents = NOTHING;
@@ -413,7 +413,7 @@ void remove_from_contents(Objid locnum, Objid thisnum) {
     else {
       /* gotta search for it! */
       Objid curr;
- 
+
       for (curr = objects[locnum]->contents;
            curr != NOTHING;
            curr = objects[curr]->next) {
@@ -429,7 +429,7 @@ void remove_from_contents(Objid locnum, Objid thisnum) {
         }
       }
     }
-     
+
     /* finally, ensure this's next is nothing. */
     objects[thisnum]->next = NOTHING;
 }
@@ -469,7 +469,7 @@ void remove_from_children(Objid parnum, Objid thisnum) {
     objects[thisnum]->sibling = NOTHING;
 }
 
- 
+
 /* APPEND:
  * if list has an end: lid = end, lid->next = this.
  *                     then, end = this.
@@ -477,7 +477,7 @@ void remove_from_children(Objid parnum, Objid thisnum) {
  * if list has no end: start = this, end = this.
  */
 void add_to_contents(Objid locnum, Objid thisnum) {
-    
+
     /* do we have an end? if so, easy */
     if (objects[locnum]->lastcontents != NOTHING) {
        Objid lastnum = objects[locnum]->lastcontents;
@@ -581,7 +581,7 @@ db_first_contents(Objid oid)
 }
 
 Objid
-db_last_contents(Objid oid) 
+db_last_contents(Objid oid)
 {
         Object *o = dbpriv_find_object(oid);
 
@@ -720,7 +720,7 @@ db_object_occupants(Objid oid_what, Objid oid_parent, Var * value)
     for (i = next_empty; i <= slots; i++) {
 	result.v.list[i] = zero;
     }
-   
+
     *value = sublist(result, 1, next_empty - 1);
     return;
 }
@@ -784,7 +784,7 @@ is_in_a(Objid oid_what, Objid oid_type_of_location)
     }
     Objid loc = objects[oid_what]->location;
 
-    if (oid_type_of_location == NOTHING || 
+    if (oid_type_of_location == NOTHING ||
 	!valid(oid_type_of_location)) {
         return 0;
     }
@@ -813,7 +813,7 @@ dbpriv_set_all_users(Var v)
 
 char rcsid_db_objects[] = "$Id: db_objects.c,v 1.14 2010/05/17 01:49:02 blacklite Exp $";
 
-/* 
+/*
  * $Log: db_objects.c,v $
  * Revision 1.14  2010/05/17 01:49:02  blacklite
  * add bf_occupants
@@ -894,4 +894,3 @@ char rcsid_db_objects[] = "$Id: db_objects.c,v 1.14 2010/05/17 01:49:02 blacklit
  * Revision 1.1  1995/11/30  04:20:41  pavel
  * Initial revision
  */
-

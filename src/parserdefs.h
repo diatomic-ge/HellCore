@@ -18,7 +18,7 @@
 #ifndef ParserDefs_h
 #define ParserDefs_h 1
 
-#include "config.h"
+#include "oldconfig.h"
 #include "program.h"
 #include "version.h"
 
@@ -33,7 +33,7 @@ extern Program *parse_list_as_program(Var code, Var * errors);
 
 #endif
 
-/* 
+/*
  * $Log: parserdefs.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

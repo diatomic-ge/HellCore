@@ -24,7 +24,7 @@
 #ifndef Name_Lookup_H
 #define Name_Lookup_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 
 extern int initialize_name_lookup(void);
 								/* Initialize the module, returning true iff
@@ -50,7 +50,7 @@ extern const char *lookup_name_from_addr(struct sockaddr_in *addr,
 
 #endif								/* Name_Lookup_H */
 
-/* 
+/*
  * $Log: name_lookup.h,v $
  * Revision 1.4  2010/05/16 02:39:23  blacklite
  * Break out some IPC stuff into pipe_utils.c, add var serialization, and some unfinished mysql stuff

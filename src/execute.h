@@ -18,7 +18,7 @@
 #ifndef Execute_h
 #define Execute_h 1
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "opcode.h"
 #include "parse_cmd.h"
@@ -39,7 +39,7 @@ typedef struct {
     Byte bi_func_pc;		/* next == 0 means a normal activation, which just
 				   returns to the previous activation (caller verb).
 				   next == 1, 2, 3, ... means the returned value should be
-				   fed to the bi_func (as specified in bi_func_id) 
+				   fed to the bi_func (as specified in bi_func_id)
 				   together with the next code. */
     Byte bi_func_id;
     void *bi_func_data;
@@ -135,7 +135,7 @@ extern int read_activ(activation * a, int which_vector);
 
 #endif
 
-/* 
+/*
  * $Log: execute.h,v $
  * Revision 1.5  2010/05/17 04:26:05  blacklite
  * add bf_cputime for reals

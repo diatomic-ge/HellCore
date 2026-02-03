@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 #include "exceptions.h"
 #include "ref_count.h"
 #include "storage.h"
@@ -210,7 +210,7 @@ delref(const void *p)
 
 char rcsid_ref_count[] = "$Id: ref_count.c,v 1.3 2007/09/12 07:33:29 spunky Exp $";
 
-/* 
+/*
  * $Log: ref_count.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server
@@ -220,7 +220,7 @@ char rcsid_ref_count[] = "$Id: ref_count.c,v 1.3 2007/09/12 07:33:29 spunky Exp 
  *
  * Revision 1.3  1997/07/07 03:24:55  nop
  * Merge UNSAFE_OPTS (r5) after extensive testing.
- * 
+ *
  * Revision 1.2.2.1  1997/03/20 18:59:24  bjj
  * Allocate refcounts with objects that can be addref()'d (strings, lists,
  * floats).  Use macros to manipulate those counts.  This completely replaces

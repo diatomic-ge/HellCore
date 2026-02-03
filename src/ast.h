@@ -18,7 +18,7 @@
 #ifndef AST_h
 #define AST_h 1
 
-#include "config.h"
+#include "oldconfig.h"
 #include "parserdefs.h"
 #include "structures.h"
 #include "sym_table.h"
@@ -215,7 +215,7 @@ extern void free_stmt(Stmt *);
 
 #endif				/* !AST_h */
 
-/* 
+/*
  * $Log: ast.h,v $
  * Revision 1.4  2009/03/08 12:41:30  blacklite
  * Added HASH data type, yield keyword, MEMORY_TRACE, vfscanf(),

@@ -17,7 +17,7 @@
 
 #include "my-stdio.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "structures.h"
 
 extern void  set_log_file(FILE *);
@@ -31,7 +31,7 @@ extern void reset_command_history(void);
 extern void log_command_history(void);
 extern void add_command_to_history(Objid player, const char *command);
 
-/* 
+/*
  * $Log: log.h,v $
  * Revision 1.4  2009/03/08 12:41:31  blacklite
  * Added HASH data type, yield keyword, MEMORY_TRACE, vfscanf(),

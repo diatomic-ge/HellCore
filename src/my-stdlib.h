@@ -18,7 +18,7 @@
 #ifndef My_Stdlib_H
 #define My_Stdlib_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if HAVE_STDLIB_H
 
@@ -69,7 +69,7 @@ extern int srandom(unsigned);
 
 #endif
 
-/* 
+/*
  * $Log: my-stdlib.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

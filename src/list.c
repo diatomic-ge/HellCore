@@ -19,7 +19,7 @@
 #include "my-string.h"
 
 #include "bf_register.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "execute.h"
 #include "exceptions.h"
 #include "functions.h"
@@ -128,18 +128,18 @@ doinsert(Var list, Var value, int pos)
 #ifdef TRY_REALLOC_TRICKS
 	    /* resize to $+1 */
 	    list.v.list = (Var *) myrealloc(list.v.list, (size + 1) * sizeof(Var), M_LIST);
-	
+
 	    /* shift elements from list[pos..$] to list[pos + 1..$+1] */
 	    memmove(list.v.list + pos + 1, list.v.list + pos, (size - pos + 1) * sizeof(Var));
 #else
 	    /* insert into refcount 1 list. */
 	    Var *newlist;
-	    
+
 	    newlist = (Var *) mymalloc((size + 1) * sizeof(Var), M_LIST);
 
 	    /* copy from oldlist to newlist up to 'pos' */
 	    memcpy(newlist, list.v.list, pos * sizeof(Var));
- 
+
 	    /* copy from oldlist[pos] to newlist[pos+1], the rest of the list. */
 	    memcpy(newlist + pos + 1, list.v.list + pos, (size - 1 - pos) * sizeof(Var));
 
@@ -376,7 +376,7 @@ print_to_stream(Var v, Stream * s)
 	    len = v.v.list[0].v.num;
 	    for (i = HASH_START; i <= len; i++) {
 		hashentry = v.v.list[i];
-		
+
 		if (hashentry.type == TYPE_LIST) {
 		    sublen = hashentry.v.list[0].v.num;
 		    for (subi = 1; subi <= sublen; subi += 2) {
@@ -1175,7 +1175,7 @@ do_map(Var arglist, Byte next, struct bf_map_data *data, Objid progr)
 {
     if (next != 1) {
 	/* got results */
-	data->result.v.list[next - 1] = arglist;	
+	data->result.v.list[next - 1] = arglist;
     }
 
     if (next <= data->until) {
@@ -1303,7 +1303,7 @@ register_list(void)
 
 char rcsid_list[] = "$Id: list.c,v 1.6 2009/09/29 20:47:52 blacklite Exp $";
 
-/* 
+/*
  * $Log: list.c,v $
  * Revision 1.6  2009/09/29 20:47:52  blacklite
  * Add infrastructure for bf_map (not used yet anywhere). Adjust formatting of some stuff in list_resize (tabs/spaces)
@@ -1324,7 +1324,7 @@ char rcsid_list[] = "$Id: list.c,v 1.6 2009/09/29 20:47:52 blacklite Exp $";
  *
  * Revision 1.4  1997/07/07 03:24:54  nop
  * Merge UNSAFE_OPTS (r5) after extensive testing.
- * 
+ *
  * Revision 1.3.2.3  1997/07/03 08:04:01  bjj
  * Pattern cache was not storing case_matters flag, causing many patterns to
  * be impossible to find in the cache.

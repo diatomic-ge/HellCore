@@ -18,7 +18,7 @@
 #ifndef DB_h
 #define DB_h 1
 
-#include "config.h"
+#include "oldconfig.h"
 #include "program.h"
 #include "structures.h"
 
@@ -537,7 +537,7 @@ extern void db_delete_verb(db_verb_handle);
 
 #endif				/* !DB_h */
 
-/* 
+/*
  * $Log: db.h,v $
  * Revision 1.9  2010/05/17 01:49:02  blacklite
  * add bf_occupants

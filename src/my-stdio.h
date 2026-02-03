@@ -18,7 +18,7 @@
 #ifndef My_Stdio_H
 #define My_Stdio_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 
 #include <stdio.h>
 
@@ -64,7 +64,7 @@ extern int vfscanf(FILE *, const char *, va_list);
 
 #endif				/* !My_Stdio_H */
 
-/* 
+/*
  * $Log: my-stdio.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

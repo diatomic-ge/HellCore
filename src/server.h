@@ -28,7 +28,7 @@
 
 #include "my-stdio.h"
 
-#include "config.h"
+#include "oldconfig.h"
 
 typedef struct {		/* Server's handle on a connection */
     void *ptr;

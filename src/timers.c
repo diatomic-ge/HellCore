@@ -21,7 +21,7 @@
 #include "my-time.h"
 #include "my-unistd.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "timers.h"
 
 #if (defined(MACH) && defined(CMU)) || !defined(SIGVTALRM)
@@ -302,7 +302,7 @@ reenable_timers(void)
 
 char rcsid_timers[] = "$Id: timers.c,v 1.3 2007/09/12 07:33:29 spunky Exp $";
 
-/* 
+/*
  * $Log: timers.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

@@ -18,7 +18,7 @@
 #ifndef Eval_env_h
 #define Eval_env_h 1
 
-#include "config.h"
+#include "oldconfig.h"
 #include "structures.h"
 #include "version.h"
 
@@ -34,7 +34,7 @@ void fill_in_rt_consts(Var * env, DB_Version);
 
 #endif
 
-/* 
+/*
  * $Log: eval_env.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

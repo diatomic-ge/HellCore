@@ -22,7 +22,7 @@ static char rcsid[] = "$Id: waif.c,v 1.6 1999/08/20 05:55:57 bjj Exp $";
 
 #include "structures.h"
 #include "bf_register.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "exceptions.h"
 #include "functions.h"
 #include "storage.h"
@@ -101,7 +101,7 @@ gen_waif_propdefs(Object *o)
 	    for (i = 0; i < p->propdefs.cur_length; ++i)
 		if (p->propdefs.l[i].name[0] == WAIF_PROP_PREFIX)
 		    ++cnt;
-	
+
 	wpd = (WaifPropdefs *) mymalloc(sizeof(WaifPropdefs) +
 			(cnt-1) * sizeof(Propdef), M_WAIF_XTRA);
 	/* must free this after to avoid getting the same pointer! */
@@ -327,7 +327,7 @@ found:
  * propval array accordingly.
  */
 static int
-alloc_propval_offset(Waif *w, int idx) 
+alloc_propval_offset(Waif *w, int idx)
 {
 	int result = -1;	/* avoid warning */
 	Var *newpv, *old, *new;

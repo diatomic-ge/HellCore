@@ -25,7 +25,7 @@
 
 #include <string.h>
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "db_io.h"
 #include "db_private.h"

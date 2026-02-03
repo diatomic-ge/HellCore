@@ -20,7 +20,7 @@
 
 #include "my-stdio.h"
 #include "options.h"
-#include "config.h"
+#include "oldconfig.h"
 
 
 typedef int32 Objid;

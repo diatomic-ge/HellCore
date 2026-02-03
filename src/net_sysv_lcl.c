@@ -75,7 +75,7 @@
 #include "my-stdlib.h"		/* exit() */
 #include "my-unistd.h"		/* chmod(), close(), pipe(), read(), write() */
 
-#include "config.h"
+#include "oldconfig.h"
 #include "exceptions.h"
 #include "list.h"
 #include "log.h"

@@ -19,7 +19,7 @@
  * Routines for manipulating properties on DB objects
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "db_private.h"
 #include "list.h"
@@ -703,7 +703,7 @@ dbpriv_fix_properties_after_chparent(Objid oid, Objid old_parent)
 
 char rcsid_db_properties[] = "$Id: db_properties.c,v 1.3 2007/09/12 07:33:29 spunky Exp $";
 
-/* 
+/*
  * $Log: db_properties.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

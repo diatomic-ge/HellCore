@@ -26,7 +26,7 @@
 #include "my-unistd.h"
 #include "my-wait.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "db_io.h"
 #include "disassemble.h"

@@ -22,7 +22,7 @@
 #include "my-time.h"
 
 #include "bf_register.h"
-#include "config.h"
+#include "oldconfig.h"
 #include "functions.h"
 #include "log.h"
 #include "options.h"
@@ -157,7 +157,7 @@ register_log(void)
 
 char rcsid_log[] = "$Id: log.c,v 1.4 2009/03/08 12:41:31 blacklite Exp $";
 
-/* 
+/*
  * $Log: log.c,v $
  * Revision 1.4  2009/03/08 12:41:31  blacklite
  * Added HASH data type, yield keyword, MEMORY_TRACE, vfscanf(),

@@ -22,7 +22,7 @@
 #include <signal.h>
 #include <sys/time.h>
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "db_io.h"
 #include "decompile.h"
@@ -85,7 +85,7 @@ static struct itimerval itimer_now;
 volatile sig_atomic_t itimer_secs;
 static int proftimer_on = 0;
 
-void 
+void
 proftimer_sighandler(int sig)
 {
     itimer_secs++;
@@ -116,7 +116,7 @@ stop_proftimer()
 
     itimer_set.it_value.tv_sec = 0;
     itimer_set.it_value.tv_usec = 0;
-    itimer_set.it_interval.tv_sec = 0;  
+    itimer_set.it_interval.tv_sec = 0;
     itimer_set.it_interval.tv_usec = 0;
     signal(SIGPROF, SIG_IGN);
     result = setitimer(ITIMER_PROF, &itimer_set, NULL);
@@ -144,7 +144,7 @@ read_proftimer()
     int e_secs, e_msecs;
     e_secs = itimer_now.it_interval.tv_sec - itimer_now.it_value.tv_sec;
     e_msecs = (e_secs * 1000) + (itimer_now.it_interval.tv_usec
-	- itimer_now.it_value.tv_usec)/1000; 
+	- itimer_now.it_value.tv_usec)/1000;
 
     return ((e_msecs > 0) ? e_msecs : 0);
 }
@@ -156,12 +156,12 @@ log_activation_for_profile(const char* context)
 	return;
 
     if (current_task_kind == TASK_FORKED) {
-	profile_log("%d,%d,%s,#%d,%s,#%d\n", 
-	    current_task_id, root_activ_vector, context, 
+	profile_log("%d,%d,%s,#%d,%s,#%d\n",
+	    current_task_id, root_activ_vector, context,
 	    RUN_ACTIV.vloc, RUN_ACTIV.verbname, RUN_ACTIV.this);
     } else {
-	profile_log("%d,MAIN,%s,#%d,%s,#%d\n", 
-	    current_task_id, context, 
+	profile_log("%d,MAIN,%s,#%d,%s,#%d\n",
+	    current_task_id, context,
 	    RUN_ACTIV.vloc, RUN_ACTIV.verbname, RUN_ACTIV.this);
     }
 }
@@ -807,12 +807,12 @@ call_verb_index(Objid where, unsigned verb_index, Objid this, const char *vname,
  call_verb(Objid this, const char *vname, Var args, int do_pass)
  {
  	Var THIS;
- 
+
  	THIS.type = TYPE_OBJ;
  	THIS.v.obj = this;
  	return _call_verb(this, vname, THIS, args, do_pass);
  }
- 
+
 static int
 rangeset_check(int end, int from, int to)
 {
@@ -868,7 +868,7 @@ bi_prop_protected(enum bi_prop prop, Objid progr)
 }
 #endif				/* IGNORE_PROP_PROTECTED */
 
-/** 
+/**
   the main interpreter -- run()
   everything is just an entry point to it
 **/
@@ -1012,13 +1012,13 @@ do {    						    	\
 
                 count = TOP_RT_VALUE;   /* will be a integer, at first */
                 list = NEXT_TOP_RT_VALUE;       /* list or hash */
-	
-		if (list.type != TYPE_LIST && list.type != TYPE_HASH) {	
+
+		if (list.type != TYPE_LIST && list.type != TYPE_HASH) {
                     RAISE_ERROR(E_TYPE);
                     free_var(POP());
                     free_var(POP());
                     JUMP(lab);
-                } else if (count.type == TYPE_INT && 
+                } else if (count.type == TYPE_INT &&
                            count.v.num > list.v.list[0].v.num /* size */ ) {
                     free_var(POP());
                     free_var(POP());
@@ -1142,7 +1142,7 @@ do {    						    	\
 		index = POP();	/* index, should be integer */
 		list = POP();	/* lhs except last index, should be list or str */
 		/* whole thing should mean list[index] = value */
-		
+
 		if (list.type == TYPE_HASH) {
 		    if (index.type != TYPE_STR && index.type != TYPE_INT &&
 		        index.type != TYPE_FLOAT && index.type != TYPE_OBJ &&
@@ -1153,7 +1153,7 @@ do {    						    	\
 		      PUSH_ERROR(E_TYPE);
 	    	    } else {
 			Var res;
-			
+
 			if (var_refcount(list) == 1)
 			    res = list;
 			else {
@@ -1161,7 +1161,7 @@ do {    						    	\
 			    free_var(list);
 			}
 			res = hashset(res, index, value);
-		
+
 			if (res.type == TYPE_ERR)
 			    PUSH_ERROR(res.v.err);
 			else
@@ -1337,7 +1337,7 @@ do {    						    	\
 		    free_var(rhs);
 		    free_var(lhs);
 		} else if (rhs.type == TYPE_HASH) {
-		    if (lhs.type != TYPE_STR && lhs.type != TYPE_INT && 
+		    if (lhs.type != TYPE_STR && lhs.type != TYPE_INT &&
 		        lhs.type != TYPE_OBJ && lhs.type != TYPE_FLOAT &&
 		        lhs.type != TYPE_ERR) {
 			    free_var(rhs);
@@ -1496,7 +1496,7 @@ do {    						    	\
 				PUSH_ERROR(E_TYPE);
 			} else {
 			    Var result = hashget(list, index);
-			    
+
 			    if (result.type == TYPE_NONE) {
 				free_var(index);
 				free_var(list);
@@ -1837,16 +1837,16 @@ do {    						    	\
  		enum error err = E_NONE;
   		Var args, verb, obj;
  		Objid class;
-  
+
   		args = POP();	/* args, should be list */
   		verb = POP();	/* verbname, should be string */
   		obj = POP();	/* objid, should be obj */
-  
+
  		if (verb.type != TYPE_STR || args.type != TYPE_LIST) {
  			err = E_TYPE;
  		} else if (obj.type == TYPE_WAIF) {
  			char *str = mymalloc(strlen(verb.v.str) + 2,M_STRING);
- 
+
  			class = obj.v.waif->class;
                          str[0] = WAIF_VERB_PREFIX;
                          strcpy(str + 1, verb.v.str);
@@ -1858,10 +1858,10 @@ do {    						    	\
  				err = E_VERBNF;
  		} else
  			err = E_TYPE;
- 
+
  		if (err == E_NONE && !valid(class))
  			err = E_INVIND;
- 
+
  		if (err == E_NONE) {
   		    STORE_STATE_VARIABLES();
  		    err = _call_verb(class, verb.v.str, obj, args, 0);
@@ -1874,7 +1874,7 @@ do {    						    	\
 		free_var(obj);
 		free_var(verb);
 
-		if (err != E_NONE) {	/* there is an error, RUN_ACTIV unchanged, 
+		if (err != E_NONE) {	/* there is an error, RUN_ACTIV unchanged,
 					   args must be freed */
 		    free_var(args);
 		    PUSH_ERROR(err);
@@ -2034,17 +2034,17 @@ do {    						    	\
 			    PUSH(ans);
 		    }
 		    break;
-		
+
 		case EOP_MAKE_HASHENTRY:
 		    {
 			/* this has no purpose other than to quickly make
 			 * a 2-element list for args to EOP_MAKE_HASH. */
 			Var key, value, hashentry;
-			
+
 			value = POP();
 			key = POP();
-			
-			if (key.type != TYPE_STR && key.type != TYPE_OBJ && 
+
+			if (key.type != TYPE_STR && key.type != TYPE_OBJ &&
 			    key.type != TYPE_ERR && key.type != TYPE_INT &&
 			    key.type != TYPE_FLOAT) {
 				free_var(key);
@@ -2058,17 +2058,17 @@ do {    						    	\
 			}
 		    }
 		    break;
-		
+
 
 		case EOP_MAKE_HASH:
 		    {
 			int i;
 			Var list, newhash, entry;
-			
+
 			list = POP();
-			/* assuming everything went well, this should be 
+			/* assuming everything went well, this should be
 			 * a list of hash entries made by EOP_MAKE_HASHENTRY... */
-			
+
 			newhash = new_hash();
 			if (newhash.v.list[0].v.num == 0) {
 				errlog("got 0-length list from new-hash!");
@@ -2085,7 +2085,7 @@ do {    						    	\
 					newhash = hashset(newhash, var_ref(entry.v.list[1]), var_ref(entry.v.list[2]));
 				}
 			}
-			
+
 			free_var(list);
 			PUSH(newhash);
 		    }
@@ -2267,7 +2267,7 @@ do {    						    	\
 			LOAD_STATE_VARIABLES();
 		    }
 		    break;
-		    
+
 		case EOP_YIELD0:
 		case EOP_YIELD:
 		    if (ticks_remaining <= YIELD_THRESHOLD_TICKS
@@ -2291,10 +2291,10 @@ do {    						    	\
 		    	   }
 		   	   yield_secs = (double) time.v.num;
 		    	}
-		    
+
 		    	p = make_suspend_pack(enqueue_yielded_task, &yield_secs);
-		    
-			STORE_STATE_VARIABLES();	
+
+			STORE_STATE_VARIABLES();
 		    	e = suspend_task(p);
 		    	if (e == E_NONE) {
 			    task_was_suspended = 2;
@@ -2507,7 +2507,7 @@ run_interpreter(char raise, enum error e,
     task_was_suspended = 0;
 
     log_activation_for_profile("start_execution");
-						 
+
     handler_verb_args = zero;
     handler_verb_name = 0;
     start_proftimer();
@@ -2603,7 +2603,7 @@ do_task(Program * prog, int which_vector, Var * result, int do_db_tracebacks)
 {				/* which vector determines the vector for the root_activ.
 				   a forked task can also have which_vector == MAIN_VECTOR.
 				   this happens iff it is recovered from a read from disk,
-				   because in that case the forked statement is parsed as 
+				   because in that case the forked statement is parsed as
 				   the main vector */
     int forked = (current_task_kind == TASK_FORKED);
 
@@ -3200,7 +3200,7 @@ register_execute(void)
     register_function("ticks_left", 0, 0, bf_ticks_left);
     register_function("cputime", 0, 0, bf_cputime);
     register_function("pass", 0, -1, bf_pass);
-    register_function("call_verb", 3, 4, bf_call_verb, 
+    register_function("call_verb", 3, 4, bf_call_verb,
 	TYPE_OBJ, TYPE_STR, TYPE_LIST, TYPE_OBJ);
     register_function("call_verb_index", 4, 6, bf_call_verb_index,
         TYPE_OBJ, TYPE_INT, TYPE_STR, TYPE_LIST, TYPE_OBJ, TYPE_OBJ);
@@ -3307,7 +3307,7 @@ Var *
 reorder_rt_env(Var * old_rt_env, const char **old_names,
 	       int old_size, Program * prog)
 {
-    /* reorder old_rt_env, which is aligned according to old_names, 
+    /* reorder old_rt_env, which is aligned according to old_names,
        to align to prog->var_names -- return the new rt_env
        after freeing old_rt_env and old_names */
 
@@ -3475,7 +3475,7 @@ read_activ(activation * a, int which_vector)
 
 char rcsid_execute[] = "$Id: execute.c,v 1.19 2014/02/26 09:02:00 broseidon Exp $";
 
-/* 
+/*
  * $Log: execute.c,v $
  * Revision 1.19  2010/05/17 07:25:35  blacklite
  * last fixes for 1.10.4

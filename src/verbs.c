@@ -17,7 +17,7 @@
 
 #include "my-string.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "db.h"
 #include "exceptions.h"
 #include "execute.h"
@@ -631,7 +631,7 @@ register_verbs(void)
 
 char rcsid_verbs[] = "$Id: verbs.c,v 1.7 2009/07/26 19:59:25 blacklite Exp $";
 
-/* 
+/*
  * $Log: verbs.c,v $
  * Revision 1.7  2009/07/26 19:59:25  blacklite
  * fix has_callable_verb to return {obj} not obj.

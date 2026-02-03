@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 #if HAVE_LRAND48
 extern long lrand48(void);
@@ -33,7 +33,7 @@ extern void srand48(long);
 #  endif
 #endif
 
-/* 
+/*
  * $Log: random.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

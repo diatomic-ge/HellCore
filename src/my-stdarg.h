@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "config.h"
+#include "oldconfig.h"
 
 /* The server no longer uses variable-length argument lists of large (size > 8
  * bytes) structures, so this code is no longer needed and BUGGY_STDARG is
@@ -55,7 +55,7 @@ typedef void *va_list;
 
 #endif				/* BUGGY_STDARG */
 
-/* 
+/*
  * $Log: my-stdarg.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

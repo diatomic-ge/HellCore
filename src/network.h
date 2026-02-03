@@ -24,7 +24,7 @@
 #ifndef Network_H
 #define Network_H 1
 
-#include "config.h"
+#include "oldconfig.h"
 #include "options.h"
 #include "structures.h"
 
@@ -244,7 +244,7 @@ extern void network_shutdown(void);
 
 #endif				/* Network_H */
 
-/* 
+/*
  * $Log: network.h,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server

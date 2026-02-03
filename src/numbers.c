@@ -23,7 +23,7 @@
 #include "my-string.h"
 #include "my-time.h"
 
-#include "config.h"
+#include "oldconfig.h"
 #include "functions.h"
 #include "log.h"
 #include "random.h"

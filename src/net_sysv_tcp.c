@@ -45,7 +45,7 @@
 #include "my-tiuser.h"		/* t_open(), t_bind(), t_alloc(), t_accept() */
 #include "my-unistd.h"		/* close() */
 
-#include "config.h"
+#include "oldconfig.h"
 #include "log.h"
 #include "name_lookup.h"
 #include "net_proto.h"
