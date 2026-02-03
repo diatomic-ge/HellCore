@@ -92,9 +92,9 @@ AC_CHECK_HEADERS([crypt.h])
 # failing to an insecure mode without making the user explicitly request/allow
 # it feels wrong.
 AC_SEARCH_LIBS([crypt],
-               [crypt],
+               [crypt xcrypt],
                [],
-               AC_MSG_ERROR([cannot find a crypt() implementation]))
+               [AC_MSG_ERROR([cannot find a crypt implementation])])
 
 
 # Generate the configure script.
