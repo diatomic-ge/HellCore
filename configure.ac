@@ -96,6 +96,18 @@ AC_SEARCH_LIBS([crypt],
                [],
                [AC_MSG_ERROR([cannot find a crypt implementation])])
 
+# Check if we have the more modern helper function to generate a salt.
+# If we do, we can get the benefits of whatever the best algorithm our crypt
+# implementation has, without needing to know what algorithm it is or how we
+# should generate a salt.
+# If we don't find it, we fall back on the less secure DES crypt().
+AC_SEARCH_LIBS([crypt_gensalt],
+               [crypt xcrypt],
+               [AC_DEFINE([HAVE_CRYPT_GENSALT],
+                          1,
+                          [Define to 1 if crypt_gensalt is available.])],
+               [AC_MSG_WARN([using insecure DES crypt salts as crypt_gensalt is unavailable])])
+
 
 # Generate the configure script.
 # (There probably shouldn't be any autoconf things after this.)
