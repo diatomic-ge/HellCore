@@ -65,6 +65,11 @@
 
             # The gperf perfect hash generator for recognizing keywords.
             gperf
+
+            # A more modern libcrypt.
+            # This is necessary, since libcrypt might be being phased out of
+            # glibc, and we won't get a libcrypt for free from stdenv.
+            libxcrypt
           ];
 
           # Extra flags to pass to ./configure.

@@ -81,8 +81,20 @@ AC_PROG_SED
 AC_SEARCH_LIBS([atan2], [m])
 
 
+# Figure out what crypt we have.
+
+# Find a crypt.h.
+AC_CHECK_HEADERS([crypt])
+
 # Link the crypt library.
-AC_SEARCH_LIBS([crypt], [crypt])
+# If we don't find a valid crypt() implementation, be loud and give up.
+# We can technically use the no-op crypt that's just duplicating the string, but
+# failing to an insecure mode without making the user explicitly request/allow
+# it feels wrong.
+AC_SEARCH_LIBS([crypt],
+               [crypt],
+               [],
+               AC_MSG_ERROR([cannot find a crypt() implementation]))
 
 
 # Generate the configure script.
