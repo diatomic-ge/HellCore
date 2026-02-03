@@ -37,13 +37,14 @@
  *
  */
 
+#include <config.h>
 #include "oldconfig.h"
 #include "version.h"
 
 const char *FUP_version = "1.9";
 // const char *server_version = "1.10.4";
 // this is now set in configure.ac
-const char *server_version = "@PACKAGE_VERSION@";
+const char *server_version = PACKAGE_VERSION;
 
 int
 check_version(DB_Version version)

@@ -48,8 +48,7 @@ AC_CONFIG_HEADERS([config.h])
 # For example, Makefile.in (generated automatically by automake) becomes
 # Makefile.
 AC_CONFIG_FILES([Makefile
-                 src/Makefile
-                 src/version.c])
+                 src/Makefile])
 
 
 # Check for necessary programs.
