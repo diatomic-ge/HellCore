@@ -14,9 +14,9 @@ AC_PREREQ([2.64])
 # NOTE: The HellCore version should be set here, not elsewhere.
 AC_INIT([HellCore],
         [1.10.4],
-        [https://github.com/necanthrope/HellCore],
+        [https://github.com/diatomic-ge/HellCore],
         [],
-        [https://github.com/necanthrope/HellCore])
+        [https://github.com/diatomic-ge/HellCore])
 
 
 # Initialize automake.
