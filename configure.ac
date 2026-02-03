@@ -39,6 +39,10 @@ AM_SILENT_RULES([yes])
 AC_CONFIG_SRCDIR([src/db_verbs.c])
 
 
+# The name of the header file to generate which holds all the configuration
+# options specified while building, or detected by autoconf.
+AC_CONFIG_HEADERS([config.h])
+
 
 # These are the files we want configure to substitute values.
 # For example, Makefile.in (generated automatically by automake) becomes
