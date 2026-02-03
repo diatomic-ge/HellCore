@@ -1,0 +1,30 @@
+# This file contains various editor settings for editing the files.
+# While formatting's not very consistent as it is, at least we can keep it from
+# getting worse.
+
+# This is at the root of the project.
+root = true
+
+# Settings for files in general.
+[*]
+charset = utf-8
+trim_trailing_whitespace = true
+end_of_line = lf
+insert_final_newline = true
+
+# Settings for Makefiles.
+[Makefile]
+indent_style = tab
+
+# Settings for shell scripts.
+[*.sh]
+# Indent with two spaces.
+indent_style = space
+indent_size = 2
+
+# Settings for C files.
+[*.{c,h}]
+# Indent with four spaces.
+# Indentation's not consistent anywhere, but that seems to be common enough.
+indent_style = space
+indent_size = 4
