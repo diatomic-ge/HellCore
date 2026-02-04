@@ -69,7 +69,9 @@
             # A more modern libcrypt.
             # This is necessary, since libcrypt might be being phased out of
             # glibc, and we won't get a libcrypt for free from stdenv.
-            libxcrypt
+            # We enable all hashes, so that databases with old DES hashes don't
+            # break.
+            (libxcrypt.override { enableHashes = "all"; })
           ];
 
           # Extra flags to pass to ./configure.
