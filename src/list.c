@@ -15,6 +15,8 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
+#include <config.h>
+
 #include "my-ctype.h"
 #include "my-string.h"
 
@@ -37,6 +39,8 @@
 #include "unparse.h"
 #include "utils.h"
 #include "hash_lookup.h"
+
+#include <errno.h>
 
 #if HAVE_CRYPT_H
 #include <crypt.h>
@@ -633,28 +637,96 @@ bf_strsub(Var arglist, Byte next, void *vdata, Objid progr)
     }
 }
 
+/*
+ * Generate a DES crypt salt.
+ */
+#if !USE_CRYPT_GENSALT
+static char*
+make_des_crypt_salt()
+{
+    static char salt[3];
+    static char saltstuff[] =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
+
+    salt[0] = saltstuff[RANDOM() % (int) strlen(saltstuff)];
+    salt[1] = saltstuff[RANDOM() % (int) strlen(saltstuff)];
+    salt[2] = '\0';
+
+    return salt;
+}
+#endif
+
 static package
 bf_crypt(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (string, [salt]) */
     Var r;
 
-    char salt[3];
-    static char saltstuff[] =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
-    extern const char *crypt(const char *, const char *);
+    const char* salt;
+    const char* hash;
+    int generated_salt = 0;
 
     if (arglist.v.list[0].v.num == 1 || strlen(arglist.v.list[2].v.str) < 2) {
-	salt[0] = saltstuff[RANDOM() % (int) strlen(saltstuff)];
-	salt[1] = saltstuff[RANDOM() % (int) strlen(saltstuff)];
-    } else {
-	salt[0] = arglist.v.list[2].v.str[0];
-	salt[1] = arglist.v.list[2].v.str[1];
-    }
-    salt[2] = '\0';
-    r.type = TYPE_STR;
-    r.v.str = str_dup(crypt(arglist.v.list[1].v.str, salt));
+        /* Generate a salt. */
+        generated_salt = 1;
+#if USE_CRYPT_GENSALT
+        /*
+         * Ask crypt_gensalt for a salt for the best hash with default cost.
+         * We are explicitly allowed to give this pointer to crypt and not worry
+         * about freeing or anything.
+         */
+        salt = crypt_gensalt(NULL, 0, NULL, 0);
 
+        if (salt == NULL) {
+            /* Log whyever we failed to generate a salt and raise an error. */
+            log_perror("Failed to generate crypt salt");
+            free_var(arglist);
+            return make_raise_pack(E_QUOTA, "Failed to generate a crypt() salt", zero);
+        }
+#else
+        /* Use a legacy salt. */
+        salt = make_des_crypt_salt();
+#endif
+    } else {
+        /* Use our second argument as a salt. */
+        salt = arglist.v.list[2].v.str;
+    }
+
+    /* Hash our input. */
+    hash = crypt(arglist.v.list[1].v.str, salt);
+
+    /* Free our arguments since we don't need them later. */
     free_var(arglist);
+
+    if (hash == NULL) {
+        /* Crypt failed for some reason. */
+        if (errno == EINVAL) {
+            /* We had an invalid salt. */
+            if (generated_salt) {
+                /* Log a bit more specifically. */
+                log_perror("crypt rejected generated salt");
+            } else {
+                /*
+                 * Don't log user-supplied salts being wrong, but do tell the
+                 * user that explicitly since they were the one to supply it.
+                 */
+                return make_raise_pack(E_INVARG, "Invalid crypt() salt", zero);
+            }
+        } else {
+            /* Log whatever other error this is. */
+            log_perror("crypt failed");
+        }
+        /* Report the error. */
+        return make_raise_pack(E_QUOTA, "Call to crypt() failed", zero);
+    } else if (hash[0] == '*') {
+        /* For an unspecified reason, hashing failed. */
+        errlog("crypt returned an invalid/error hash starting with *");
+        return make_raise_pack(E_QUOTA, "Call to crypt() failed", zero);
+    }
+
+    /* Build up our return object. */
+    r.type = TYPE_STR;
+    r.v.str = str_dup(hash);
+
     return make_var_pack(r);
 }
 
