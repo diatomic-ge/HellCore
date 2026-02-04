@@ -96,6 +96,14 @@ AC_SEARCH_LIBS([crypt],
                [],
                [AC_MSG_ERROR([cannot find a crypt implementation])])
 
+# Give a way to disable crypt_gensalt usage, in case someone wants to stick with
+# the old DES crypt.
+AC_ARG_ENABLE([crypt-gensalt],
+              [AS_HELP_STRING([--disable-crypt-gensalt],
+                              [disable support for newer crypt algorithms])],
+              [],
+              [enable_crypt_gensalt=default])
+
 # Check if we have the more modern helper function to generate a salt.
 # If we do, we can get the benefits of whatever the best algorithm our crypt
 # implementation has, without needing to know what algorithm it is or how we
@@ -103,10 +111,38 @@ AC_SEARCH_LIBS([crypt],
 # If we don't find it, we fall back on the less secure DES crypt().
 AC_SEARCH_LIBS([crypt_gensalt],
                [crypt xcrypt],
-               [AC_DEFINE([HAVE_CRYPT_GENSALT],
-                          1,
-                          [Define to 1 if crypt_gensalt is available.])],
-               [AC_MSG_WARN([using insecure DES crypt salts as crypt_gensalt is unavailable])])
+               [crypt_gensalt_available=yes],
+               [crypt_gensalt_available=no])
+
+# Validate our crypt_gensalt setup.
+if test "x$enable_crypt_gensalt" = "xdefault"; then
+  # We should try to use crypt_gensalt, but it's only a warning if we can't.
+  use_crypt_gensalt="$crypt_gensalt_available"
+  if test "x$crypt_gensalt_available" = "xno"; then
+    # Warn that we could be using more secure salts.
+    AC_MSG_WARN([using insecure DES crypt salts as crypt_gensalt is unavailable])
+  fi
+elif test "x$enable_crypt_gensalt" = "xyes"; then
+  # They explicitly requested support, so die if we didn't find it.
+  if test "x$crypt_gensalt_available" = "xno"; then
+    AC_MSG_ERROR([crypt_gensalt is unavailable but newer hash salts were requested])
+  fi
+  use_crypt_gensalt=yes
+elif test "x$enable_crypt_gensalt" = "xno"; then
+  # Stick with the legacy salts.
+  # We don't need to warn about crypt_gensalt being unavailable, since we were
+  # asked to exclude it anyway.
+  use_crypt_gensalt=no
+else
+  AC_MSG_ERROR([unrecognized value '$enable_crypt_gensalt' for --enable-crypt-gensalt])
+fi
+
+# If we should use crypt_gensalt, let our code know.
+if test "x$use_crypt_gensalt" = "xyes"; then
+AC_DEFINE([USE_CRYPT_GENSALT],
+          1,
+          [Define to 1 if crypt_gensalt should be used.])
+fi
 
 
 # Generate the configure script.
