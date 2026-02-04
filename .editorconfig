@@ -22,6 +22,12 @@ indent_style = tab
 indent_style = space
 indent_size = 2
 
+# Settings for autoconf.
+[*.ac]
+# Indent with two spaces.
+indent_style = space
+indent_size = 2
+
 # Settings for C files.
 [*.{c,h}]
 # Indent with four spaces.
