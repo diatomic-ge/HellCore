@@ -19,10 +19,19 @@ AC_INIT([HellCore],
         [https://github.com/diatomic-ge/HellCore])
 
 
+# Put extra build tools in the build-aux directory to keep things tidy.
+AC_CONFIG_AUX_DIR([build-aux])
+
+
 # Initialize automake.
 # foreign:      Tell automake not to expect the standard GNU files (NEWS,
 #               AUTHORS, etc.), and not to error when it doesn't find them.
 AM_INIT_AUTOMAKE([foreign])
+
+
+# Keep all our autoconf macros in the m4 directory.
+AC_CONFIG_MACRO_DIRS([m4])
+
 
 # By default, just show what's being compiled while building, rather than the
 # whole command.
