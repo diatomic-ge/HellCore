@@ -54,9 +54,7 @@ moo_SOURCES = ast.c code_gen.c db_file.c db_io.c db_objects.c db_properties.c \
 # (NOTE: Unless you edit options.h, certain ones are pre-selected.)
 # (FIXME: Some of these are obsolete, and which ones are must be determined and
 # fixed manually.)
-EXTRA_moo_SOURCES = client_bsd.c client_sysv.c gnu-malloc.c net_bsd_lcl.c \
-                    net_bsd_tcp.c net_mp_fake.c net_mp_poll.c net_mp_selct.c \
-                    net_multi.c net_single.c net_sysv_lcl.c net_sysv_tcp.c
+EXTRA_moo_SOURCES = client_bsd.c client_sysv.c gnu-malloc.c
 
 # These sources are auto-generated, and shouldn't be distributed automatically.
 nodist_moo_SOURCES = keywords-s.c

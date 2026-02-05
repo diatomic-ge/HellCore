@@ -1,5 +1,5 @@
 /******************************************************************************
-  Copyright (c) 1994, 1995, 1996 Xerox Corporation.  All rights reserved.
+  Copyright (c) 1992, 1995, 1996 Xerox Corporation.  All rights reserved.
   Portions of this code were written by Stephen White, aka ghond.
   Use and copying of this software and preparation of derivative works based
   upon this software are permitted.  Any distribution of this software or
@@ -15,39 +15,102 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "options.h"
+/* Multiplexing wait implementation using the BSD UNIX select() system call */
 
-#  if MPLEX_STYLE == MP_SELECT
-#    include "net_mp_selct.c"
-#  endif
+#include <errno.h>		/* errno */
+#include "my-string.h"		/* bzero() or memset(), used in FD_ZERO */
+#include "my-sys-time.h"	/* select(), struct timeval */
+#include "my-types.h"		/* fd_set, FD_ZERO(), FD_SET(), FD_ISSET() */
 
-#  if MPLEX_STYLE == MP_POLL
-#    include "net_mp_poll.c"
-#  endif
+#include "log.h"
+#include "net_mplex.h"
 
-#  if MPLEX_STYLE == MP_FAKE
-#    include "net_mp_fake.c"
-#  endif
+static fd_set input, output;
+static int max_descriptor;
 
-char rcsid_net_mplex[] = "$Id: net_mplex.c,v 1.3 2007/09/12 07:33:29 spunky Exp $";
+void
+mplex_clear(void)
+{
+    FD_ZERO(&input);
+    FD_ZERO(&output);
+    max_descriptor = -1;
+}
+
+void
+mplex_add_reader(int fd)
+{
+    FD_SET(fd, &input);
+    if (fd > max_descriptor)
+	max_descriptor = fd;
+}
+
+void
+mplex_add_writer(int fd)
+{
+    FD_SET(fd, &output);
+    if (fd > max_descriptor)
+	max_descriptor = fd;
+}
+
+int
+mplex_wait(unsigned timeout)
+{
+    struct timeval tv;
+    int n;
+
+    tv.tv_sec = timeout / 1000000;
+    tv.tv_usec = timeout % 1000000;
+
+    n = select(max_descriptor + 1, (void *) &input, (void *) &output, 0, &tv);
+
+    if (n < 0) {
+	if (errno != EINTR)
+	    log_perror("Waiting for network I/O");
+	return 1;
+    } else
+	return (n == 0);
+}
+
+int
+mplex_is_readable(int fd)
+{
+    return FD_ISSET(fd, &input);
+}
+
+int
+mplex_is_writable(int fd)
+{
+    return FD_ISSET(fd, &output);
+}
+
+char rcsid_net_mp_selct[] = "$Id: net_mp_selct.c,v 1.3 2007/09/12 07:33:29 spunky Exp $";
 
 /* 
- * $Log: net_mplex.c,v $
+ * $Log: net_mp_selct.c,v $
  * Revision 1.3  2007/09/12 07:33:29  spunky
  * This is a working version of the current HellMOO server
  *
- * Revision 1.2  1998/12/14 13:18:29  nop
+ * Revision 1.3  1998/12/14 13:18:28  nop
  * Merge UNSAFE_OPTS (ref fixups); fix Log tag placement to fit CVS whims
  *
- * Revision 1.1.1.1  1997/03/03 03:45:00  nop
+ * Revision 1.2  1997/03/03 04:19:04  nop
+ * GNU Indent normalization
+ *
+ * Revision 1.1.1.1  1997/03/03 03:45:02  nop
  * LambdaMOO 1.8.0p5
  *
- * Revision 2.1  1996/02/08  06:58:20  pavel
+ * Revision 2.1  1996/02/08  06:36:22  pavel
  * Updated copyright notice for 1996.  Release 1.8.0beta1.
  *
- * Revision 2.0  1995/11/30  04:28:28  pavel
+ * Revision 2.0  1995/11/30  04:45:48  pavel
  * New baseline version, corresponding to release 1.8.0alpha1.
  *
- * Revision 1.1  1995/11/30  04:28:19  pavel
- * Initial revision
+ * Revision 1.3  1992/10/23  23:03:47  pavel
+ * Added copyright notice.
+ *
+ * Revision 1.2  1992/10/23  19:38:51  pavel
+ * Added missing #include of my-string.h.
+ *
+ * Revision 1.1  1992/09/23  17:14:17  pavel
+ * Initial RCS-controlled version.
  */

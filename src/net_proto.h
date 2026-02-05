@@ -25,6 +25,7 @@
 #include "oldconfig.h"
 #include "options.h"
 #include "structures.h"
+#include "net_multi.h"
 
 struct proto {
     unsigned pocket_size;	/* Maximum number of file descriptors it might
