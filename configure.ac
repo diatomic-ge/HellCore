@@ -154,6 +154,23 @@ AC_DEFINE([USE_CRYPT_GENSALT],
 fi
 
 
+AX_CHECK_OPENSSL([enable_openssl_support=yes],
+                 [enable_openssl_support=no])
+
+if test "x$enable_openssl_support" = "xyes"; then
+  # Since we're only building one thing, just inject the flags into our
+  # variables.
+  LIBS="$OPENSSL_LIBS $LIBS"
+  LDFLAGS="$OPENSSL_LDFLAGS $LDFLAGS"
+  CPPFLAGS="$OPENSSL_INCLUDES $CPPFLAGS"
+  AC_DEFINE([USE_OPENSSL],
+            1,
+            [Define to 1 if OpenSSL should be used for TLS support.])
+else
+  AC_MSG_WARN([building without SSL/TLS support as OpenSSL is unavailable])
+fi
+
+
 # Generate the configure script.
 # (There probably shouldn't be any autoconf things after this.)
 AC_OUTPUT

@@ -53,6 +53,13 @@
 
           # The build-time inputs needed to build hellcore.
           nativeBuildInputs = with pkgs; [
+            # Include the autoconf-archive macros so that aclocal can update the
+            # openssl macro.
+            # You don't need this to build hellcore, or its build system, but
+            # having it will let aclocal find newer versions of any macros we
+            # use from it.
+            autoconf-archive
+
             # This automatically regenerates the autoconf and automake build
             # system.
             autoreconfHook
@@ -72,6 +79,13 @@
             # We enable all hashes, so that databases with old DES hashes don't
             # break.
             (libxcrypt.override { enableHashes = "all"; })
+
+            # OpenSSL, for TLS support.
+            openssl.dev
+
+            # A helper for finding the right compiler flags for libraries, used
+            # to help build against OpenSSL.
+            pkg-config
           ];
 
           # Extra flags to pass to ./configure.
