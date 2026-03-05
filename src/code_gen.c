@@ -19,6 +19,7 @@
 
 #include "ast.h"
 #include "exceptions.h"
+#include "functions.h"
 #include "opcode.h"
 #include "program.h"
 #include "storage.h"
@@ -479,6 +480,25 @@ exit_loop(State * state)
 
 
 static void
+emit_call_bi_func_op(Opcode op, unsigned func, State * state)
+{
+    emit_byte(op, state);
+
+#ifdef BYTECODE_REDUCE_REF
+    /*
+     * Only record this in the push map if it's specifically a builtin which
+     * requires the VR variables (e.g. dobj), keeping similar semantics around
+     * preventing them from being cleared similar to OP_CALL_VERB.
+     */
+    if (bi_function_requires_bi_variables(func)) {
+        state->pushmap[state->num_bytes - 1] = OP_BI_FUNC_CALL;
+    }
+#endif /* BYTECODE_REDUCE_REF */
+
+    emit_byte(func, state);
+}
+
+static void
 emit_call_verb_op(Opcode op, State * state)
 {
     emit_byte(op, state);
@@ -752,8 +772,7 @@ generate_expr(Expr * expr, State * state)
 	break;
     case EXPR_CALL:
 	generate_arg_list(expr->e.call.args, state);
-	emit_byte(OP_BI_FUNC_CALL, state);
-	emit_byte(expr->e.call.func, state);
+	emit_call_bi_func_op(OP_BI_FUNC_CALL, expr->e.call.func, state);
 	break;
     case EXPR_VERB:
 	generate_expr(expr->e.verb.obj, state);
@@ -1259,15 +1278,23 @@ stmt_to_code(Stmt * stmt, GState * gstate)
 		 * a ref to `args' during the called verb.
 		 */
 		varbits = ~0U;
-	    } else if (state.pushmap[old_i] == OP_CALL_VERB) {
-		/*
-		 * Verb calls implicitly pass the VR variables (dobj,
-		 * dobjstr, player, etc).  They can't be clear at the
-		 * time of a verbcall.
-		 */
-		varbits &= NON_VR_VAR_MASK;
-	    }
-	}
+            } else if (state.pushmap[old_i] == OP_CALL_VERB ||
+                    state.pushmap[old_i] == OP_BI_FUNC_CALL) {
+                /*
+                 * Verb calls implicitly pass the VR variables (dobj,
+                 * dobjstr, player, etc).  They can't be clear at the
+                 * time of a verbcall.
+                 *
+                 * If it's OP_BI_FUNC_CALL, this is a signal from
+                 * emit_call_bi_func_op that this is a builtin which may require
+                 * the VR variables, and should be treated the same.
+                 *
+                 * Nothing else should (at the moment) put OP_BI_FUNC_CALL into
+                 * the pushmap.
+                 */
+                varbits &= NON_VR_VAR_MASK;
+            }
+        }
     }
     myfree(bbd, M_CODE_GEN);
 #endif /* BYTECODE_REDUCE_REF */
