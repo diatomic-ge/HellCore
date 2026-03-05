@@ -85,6 +85,7 @@ struct bft_entry {
     bf_read_type read;
     bf_write_type write;
     int protected;
+    int require_builtin_variables;
 };
 
 static struct bft_entry bf_table[MAX_FUNC];
@@ -116,6 +117,7 @@ register_common(const char *name, int minargs, int maxargs, bf_type func,
     bf_table[top_bf_table].read = read;
     bf_table[top_bf_table].write = write;
     bf_table[top_bf_table].protected = 0;
+    bf_table[top_bf_table].require_builtin_variables = 0;
 
     if (num_arg_types > 0)
 	bf_table[top_bf_table].prototype =
@@ -153,6 +155,39 @@ register_function_with_read_write(const char *name, int minargs, int maxargs,
     ans = register_common(name, minargs, maxargs, func, read, write, args);
     va_end(args);
     return ans;
+}
+
+/*
+ * Set whether the given builtin function may need builtin variables for
+ * bytecode reference reduction.
+ */
+unsigned
+set_bi_function_requires_bi_variables(unsigned n, int require_bi_variables)
+{
+    if (n >= top_bf_table) {
+        return FUNC_NOT_FOUND;
+    } else {
+        bf_table[n].require_builtin_variables = require_bi_variables;
+        return n;
+    }
+}
+
+/*
+ * Check whether the given builtin function may need builtin variables for
+ * bytecode reference reduction.
+ */
+int
+bi_function_requires_bi_variables(unsigned n)
+{
+    if (n >= top_bf_table) {
+        errlog("bi_function_requires_bi_variables: Unknown function number: %d\n", n);
+        /* We shouldn't get here since this is used by codegen and should only
+         * be using functions it's already looked up anyway.
+         */
+        return 0;
+    } else {
+        return bf_table[n].require_builtin_variables;
+    }
 }
 
 /*** looking up functions -- by name or num ***/
