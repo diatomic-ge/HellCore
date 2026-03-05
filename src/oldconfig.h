@@ -166,7 +166,6 @@
  * system provides the named functions.
  */
 
-#define HAVE_CRYPT 1
 #define HAVE_MATHERR 1
 #define HAVE_MKFIFO 1
 #define HAVE_REMOVE 1
