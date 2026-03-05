@@ -3188,10 +3188,22 @@ bf_set_live_profiling(Var arglist, Byte next, void *vdata, Objid progr)
 void
 register_execute(void)
 {
-    register_function_with_read_write("call_function", 1, -1, bf_call_function,
+    /*
+     * WARN: register_function* may return 0 if there are too many functions,
+     * but 0 is also a valid function number, and we don't have a good way to
+     * differentiate them.
+     *
+     * If there are too many functions, this may accidentally set the first
+     * function to require builtin variables.
+     */
+    unsigned func_id;
+    func_id = register_function_with_read_write("call_function", 1, -1, bf_call_function,
 				      bf_call_function_read,
 				      bf_call_function_write,
 				      TYPE_STR);
+    /* call_function may call other builtins that need builtin variables. */
+    set_bi_function_requires_bi_variables(func_id, 1);
+
     register_function("raise", 1, 3, bf_raise, TYPE_ANY, TYPE_STR, TYPE_ANY);
     register_function("suspend", 0, 1, bf_suspend, TYPE_NUMERIC);
     register_function("read", 0, 2, bf_read, TYPE_OBJ, TYPE_ANY);
@@ -3200,10 +3212,18 @@ register_execute(void)
     register_function("ticks_left", 0, 0, bf_ticks_left);
     register_function("cputime", 0, 0, bf_cputime);
     register_function("pass", 0, -1, bf_pass);
-    register_function("call_verb", 3, 4, bf_call_verb,
-	TYPE_OBJ, TYPE_STR, TYPE_LIST, TYPE_OBJ);
-    register_function("call_verb_index", 4, 6, bf_call_verb_index,
+
+    /*
+     * Both call_verb* functions need builtin variables such as dobj to be
+     * preserved.
+     */
+    func_id = register_function("call_verb", 3, 4, bf_call_verb,
+        TYPE_OBJ, TYPE_STR, TYPE_LIST, TYPE_OBJ);
+    set_bi_function_requires_bi_variables(func_id, 1);
+    func_id = register_function("call_verb_index", 4, 6, bf_call_verb_index,
         TYPE_OBJ, TYPE_INT, TYPE_STR, TYPE_LIST, TYPE_OBJ, TYPE_OBJ);
+    set_bi_function_requires_bi_variables(func_id, 1);
+
     register_function("set_task_perms", 1, 1, bf_set_task_perms, TYPE_OBJ);
     register_function("caller_perms", 0, 0, bf_caller_perms);
     register_function("callers", 0, 1, bf_callers, TYPE_ANY);
