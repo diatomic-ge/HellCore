@@ -79,6 +79,19 @@ extern unsigned register_function_with_read_write(const char *, int, int,
 						  bf_type, bf_read_type,
 						  bf_write_type,...);
 
+/*
+ * Set whether the given builtin function may need builtin variables for
+ * bytecode reference reduction.
+ */
+extern unsigned set_bi_function_requires_bi_variables(unsigned n,
+        int require_bi_variables);
+
+/*
+ * Check whether the given builtin function may need builtin variables for
+ * bytecode reference reduction.
+ */
+extern int bi_function_requires_bi_variables(unsigned n);
+
 extern package call_bi_func(unsigned, Var, Byte, Objid, void *);
 /* will free or use Var arglist */
 
